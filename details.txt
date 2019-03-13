@@ -1,0 +1,93 @@
+Front End Capstone - Volunteer Management System
+
+View before Login
+
+non logged in visitors can search for volunteer Opportunities. They view a condensed version of the project (name- location -description) They will need to sign up to join projects, groups, or to view contact information.
+Non-logged in navbar will show a search and the option to sign up or login. I plan to use annoying modals to get people to sign up when they click something only accessible to members.
+
+After Login for Admin/Organization
+
+nav bar- 
+*Search for Projects*
+*Manage Volunteers - Your Volunteers - Your Groups -Invite Volunteers - Blocked Volunteers -
+*Manage Projects - Create Project - Your Projects 
+*Reports - Projects - Volunteers - Log Hours - Hours Report
+- Messages -
+*Account Details - Your Profile - Your Organization Details  
+*Log out
+
+-Footer-
+*Help - How to - FAQ - Contact Us
+*Terms and Conditions
+
+
+//Pages
+*Main page - Next Upcoming Project Details displayed
+
+*Manage Volunteers - Search Volunteers by input box name or email, quick links (top hours logged, top rated, newest) - Advanced Search (toggle) (City, County, Country, Zip Code, Group, Gender, rating, skills, previous project, organization) - Search Results in main content - shows Volunteer Name,organization, date registered, hours logged, Active or InActive, checkbox)
+check box corresponds to options below (block Volunteers, unblock, add to project, remove from project, email, download volunteer list) 
+Clicking on a volunteer will show their volunteer profile
+
+*Individual Volunteers Profile -shows Volunteers inputted information and the admin can set a rating, make notes, message, add to a project, block volunteer - can edit previously saved notes, and ratings, can remove from projects on this screen as well. Admin cannout edit individual user information (such as name address demographics)
+
+*Invite Volunteers - input email list to send mass email invitation to join the organization, show a list of invites sent and status if accepted or not. If accepted, links to volunteer profile. if unnaccepted, can send reminder email. 
+
+*Your groups - Shows volunteer groups you can manage - can group by project, skills, etc. These groups are private and are only used for volunteer organizing - has options to add, edit, and delete group information - can add edit and remove volunteers from groups.
+
+*blocked volunteers - volunteers that are not to be contacted again due to various reasons. shows name, email, phone, and has option to unblock them
+
+
+
+
+
+* Manage Opportunities
+*Add Project - Add details of the project so volunteers can sign up - include project Name, description, and perks, skills required, category, tags, part of a larger project?, location details, address, directions, special instructions, are expenses paid for, allows documents to be uploaded (like registration forms, printable instructions, etc), if signups are automatically accepted or will an admin select people, restrictions, experience, internal or public, your managed volunteers only or public pool(if marked internal, project will not show up in search results when not logged in), max number of volunteers needed, minimum age, max age, if gender restricted, ask for post project feedback survey or not, is the project one time, repeating
+
+*Your Projects
+Options - Show all - Active - past - search - advanced serach by same params as was listed -standard view is soonest occuring events, search results replace standard view. Each project card shows project name - date - volunteers assigned with view more option
+
+*Individual Project View - Shows project details - can edit on this screen. Project's applied and accepted volunteers are listed here with options to assign roles, tasks, or remove. Can add volunteers to groups from this screen as well for later use in other projects. Also on this screen you can view volunteer reported hours, confirm those hours or edit them. you can also assign a monetary value to those hours (for example professional volunteers who's time is worth more than regular person's time). 
+at the bottom will be an out put of total confirmed volunteer hours for the project and the total value of the volunteer hours.
+
+Projects are displayed with option to edit the project, or to delete (if deleted, notify volunteers or remove completely?)
+
+*Reports
+Date range search
+*Project Reports - # of volunteers, project feedback comments, hours done by volunteers- range view will show aggregated infomation for projects in that date range
+
+*Volunteer Reports - displayed by age group, gender, ethnicity, group memberships, Hours logged by category, Monthly Total logged Hours by all, New Volunteer registrations, active volunteers by month
+
+*Log Hours - confirm self reported hours by volunteers and add hours that have not been reported yet. Can assign by project and hours type. All hours from all project will show up here that have not been confirmed yet. This is useful if you have volunteer hours that are not assigned to a particular project such as drop-in, administrative, or general volunteers for your organization.
+
+*Your Profile as the organization's contact person
+has image, website link, name, and bio section and interests can save and edit
+
+*Your organization's profile
+edit - Name, location, contact details, website links, organization's documents
+
+*Your Messages
+Messages that you have received and sent to volunteers. Messages are sent and tracked by username
+
+
+
+
+*FAQs 
+instructions on how to do things
+
+*T&C
+self explaintory
+
+
+//As a volunteer
+*search for projects
+*view projects
+*apply or join projects
+*set skills or times
+*add projects to calendar
+*send and receive messages
+*log hours for individual projects
+*leave feedback on projects
+*view project messages
+
+
+
