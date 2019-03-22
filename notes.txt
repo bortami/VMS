@@ -1,0 +1,19 @@
+Users will be all Users
+and an admin boolean
+
+if boolean is true
+makes them an admin
+so organization with have an admin table with organization id and user id
+
+if admin, show organization options
+
+if not, don't
+
+
+hours- will have a project key, and and organization key. both don't have to be not null, if hours only has project, project already belongs to organization, so trickle down ownership.
+Hours can be to an organization if general volunteer hours (maybe look into non-billable hours?)
+
+look into a react chart component
+
+react table component
+
