@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import NavBar from './navigation/NavBar';
+import { Box, Grommet, ResponsiveContext } from 'grommet';
+import ApplicationViews from './ApplicationViews';
+
+const theme = {
+	global: {
+		colors: {
+			brand: '#51291e',
+			dark: '#301014',
+			white: '#edf4ed',
+			accent: '#abd1b5',
+			basic: '#79b791'
+		},
+		font: {
+			family: [ 'Josefin Sans' ],
+			size: '14px',
+			height: '20px'
+		}
+	}
+};
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<Grommet theme={theme} full>
+				<ResponsiveContext.Consumer>
+					{(size) => (
+						<Box fill>
+							<NavBar />
+							<ApplicationViews />
+						</Box>
+					)}
+				</ResponsiveContext.Consumer>
+			</Grommet>
+		);
+	}
 }
 
 export default App;
