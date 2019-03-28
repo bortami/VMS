@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from './navigation/NavBar';
+import NavBar from './components/navigation/NavBar';
 import { Box, Grommet, ResponsiveContext } from 'grommet';
 import ApplicationViews from './ApplicationViews';
 
