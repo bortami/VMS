@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavBar from './components/navigation/NavBar';
 import { Box, Grommet, ResponsiveContext } from 'grommet';
 import ApplicationViews from './ApplicationViews';
+import Footer from './components/footer/footer';
 
 const theme = {
 	global: {
@@ -29,6 +30,7 @@ class App extends Component {
 						<Box fill>
 							<NavBar />
 							<ApplicationViews />
+							<Footer/>
 						</Box>
 					)}
 				</ResponsiveContext.Consumer>
