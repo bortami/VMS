@@ -105,7 +105,7 @@ export default class Volunteers extends Component {
           />
           <Button icon={<Search />} label="Search" onClick={() => {}} />
         </Box>
-        <Box direction="row" pad="mediium" align="center">
+        <Box direction="row" pad="medium" align="center">
           <Heading level={4} pad="medium">
             Quick Search:{" "}
           </Heading>
