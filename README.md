@@ -2,4 +2,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Styled with [Grommet](https://v2.grommet.io/)
 
 ### ERD
-![VMS ERD](src/images/VMS.png "VMS ERD ")
+![VMS ERD](src/images/ERD.png "VMS ERD ")
