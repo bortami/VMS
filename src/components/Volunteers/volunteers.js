@@ -84,7 +84,7 @@ export default class Volunteers extends Component {
 					<Button label="Top Rated" />
 					<Button label="Newest" />
 				</Box>
-				<Box elevation="medium" pad="medium">
+				<Box elevation="medium" pad="medium" width="50vw">
 					Volunteer Results
 					<Table>
 						<TableHeader>
@@ -96,7 +96,7 @@ export default class Volunteers extends Component {
 								<TableCell scope="col">Rating</TableCell>
 								<TableCell scope="col">Date Joined</TableCell>
 								<TableCell scope="col">Hours Logged</TableCell>
-								<TableCell scope="col">Active Status</TableCell>
+								
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -110,7 +110,7 @@ export default class Volunteers extends Component {
 										<TableCell>{this.rating(volunteer.rating)}</TableCell>
 										<TableCell>{volunteer.dateRegistered}</TableCell>
 										<TableCell>{this.totalHours(volunteer.id)}</TableCell>
-										<TableCell>{volunteer.isActive ? 'Active' : 'Inactive'}</TableCell>
+									
 									</TableRow>
 								);
 							})}
@@ -118,8 +118,8 @@ export default class Volunteers extends Component {
 					</Table>
 					<Box direction="row" pad="mediium" align="center">
 						<Button label="Add to Project" />
-						<Button label="Email" />
-						<Button label="Add to Group" />
+						
+					
 						<Button label="Generate List" />
 					</Box>
 				</Box>
