@@ -3,10 +3,49 @@ import { Route } from 'react-router-dom';
 import { Box } from 'grommet';
 import LandingPage from './components/landingPage/landingPage';
 import Volunteers from './components/Volunteers/volunteers';
+import api from './modules/apiManager';
 
 export default class ApplicationViews extends Component {
 	state = {};
-	componentDidMount() {}
+
+	
+	componentDidMount() {
+		const newState = {};
+		api.all('volunteers').then((parsedVolunteers) => {
+			newState.volunteers = parsedVolunteers;
+			api.all('organizations').then((parsedOrganizations) => {
+				newState.organizations = parsedOrganizations;
+				api.all('projects').then((parsedProjects) => {
+					newState.projects = parsedProjects;
+					api.all('groups').then((parsedGroups) => {
+						newState.groups = parsedGroups;
+						api.all('organizationAdmin').then((parsedOrganizationAdmin) => {
+							newState.organizationAdmin = parsedOrganizationAdmin;
+							api.all('categories').then((parsedCategories) => {
+								newState.categories = parsedCategories;
+								api.all('organizationVolunteer').then((parsedOrganizationVolunteer) => {
+									newState.organizationVolunteer = parsedOrganizationVolunteer;
+									api.all('groupsVolunteers').then((parsedGroupsVolunteers) => {
+										newState.groupsVolunteers = parsedGroupsVolunteers;
+										api.all('organizationCategory').then((parsedOrganizationCategory) => {
+											newState.organizationCategory = parsedOrganizationCategory;
+											api.all('projectCategory').then((parsedProjectCategory) => {
+												newState.projectCategory = parsedProjectCategory;
+												api.all('hours').then((parsedHours) => {
+													newState.hours = parsedHours;
+													this.setState(newState);
+												});
+											});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
 
 	render() {
 		return (
@@ -30,14 +69,14 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/"
 						render={(props) => {
-							return (<LandingPage {...props} />);
+							return <LandingPage {...props} projects={this.state.projects} organizations={this.state.organizations}/>;
 						}}
 					/>
 					<Route
 						exact
 						path="/volunteers"
 						render={(props) => {
-							return <Volunteers {...props}/>;
+							return <Volunteers {...props} volunteers={this.state.volunteers} hours={this.state.hours}/>;
 						}}
 					/>
 					<Route
