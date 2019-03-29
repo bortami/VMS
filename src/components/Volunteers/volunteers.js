@@ -11,7 +11,7 @@ import {
   TableBody,
   Heading
 } from "grommet";
-import { Search, Checkbox } from "grommet-icons";
+import { Search, Checkbox, Star, StarHalf } from "grommet-icons";
 
 export default class Volunteers extends Component {
   state = {
@@ -26,26 +26,59 @@ export default class Volunteers extends Component {
       },
       {
         name: "Sally",
-        rating: 2,
+        rating: 3,
         dateRegistered: "May 3, 2019",
         hoursLogged: 72,
         isActive: true
       },
       {
         name: "Sally",
-        rating: 2,
+        rating: 4,
         dateRegistered: "May 3, 2019",
         hoursLogged: 72,
         isActive: true
       },
       {
         name: "Sally",
-        rating: 2,
+        rating: 5,
         dateRegistered: "May 3, 2019",
         hoursLogged: 72,
         isActive: true
       }
     ]
+  };
+  rating = param => {
+    return param === 1 ? (
+      <Star color="accent" />
+    ) : param === 2 ? (
+      <Box direction="row">
+        <Star color="accent"/>
+        <Star color="accent"/>
+      </Box>
+    ) : param === 3 ? (
+      <Box direction="row">
+        <Star color="accent"/>
+        <Star color="accent" />
+        <Star color="accent" />
+      </Box>
+    ) : param === 4 ? (
+      <Box direction="row">
+        <Star color="accent" />
+        <Star color="accent" />
+        <Star color="accent" />
+        <Star color="accent" />{" "}
+      </Box>
+    ) : param === 5 ? (
+      <Box direction="row">
+        <Star color="accent" />
+        <Star color="accent" />
+        <Star color="accent" />
+        <Star color="accent" />
+        <Star color="accent" />{" "}
+      </Box>
+    ) : (
+      <StarHalf />
+    );
   };
   handleFieldChange = e => {
     const stateToChange = {};
@@ -103,7 +136,7 @@ export default class Volunteers extends Component {
                       <Checkbox />
                     </TableCell>
                     <TableCell>{volunteer.name}</TableCell>
-                    <TableCell>{volunteer.rating}</TableCell>
+                    <TableCell>{this.rating(volunteer.rating)}</TableCell>
                     <TableCell>{volunteer.dateRegistered}</TableCell>
                     <TableCell>{volunteer.hoursLogged}</TableCell>
                     <TableCell>
