@@ -8,7 +8,6 @@ import api from './modules/apiManager';
 export default class ApplicationViews extends Component {
 	state = {};
 
-	
 	componentDidMount() {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
@@ -69,14 +68,22 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/"
 						render={(props) => {
-							return <LandingPage {...props} projects={this.state.projects} organizations={this.state.organizations}/>;
+							return (
+								<LandingPage
+									{...props}
+									projects={this.state.projects}
+									organizations={this.state.organizations}
+								/>
+							);
 						}}
 					/>
 					<Route
 						exact
 						path="/volunteers"
 						render={(props) => {
-							return <Volunteers {...props} volunteers={this.state.volunteers} hours={this.state.hours}/>;
+							return (
+								<Volunteers {...props} volunteers={this.state.volunteers} hours={this.state.hours} />
+							);
 						}}
 					/>
 					<Route
