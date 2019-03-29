@@ -11,7 +11,9 @@
 			"bio": "a charmingly wonderful ex-con",
 			"rating": 2,
 			"gender": "Female",
-			"location": "Huntington, WV"
+			"location": "Huntington, WV",
+            "dateRegistered": "04/01/2019",
+            "isActive": true
 		}
 	],
 	"organizations": [
