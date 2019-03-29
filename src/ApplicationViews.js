@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { Box } from 'grommet';
 import LandingPage from './components/landingPage/landingPage';
+import Volunteers from './components/Volunteers/volunteers';
 
 export default class ApplicationViews extends Component {
 	state = {};
@@ -36,7 +37,7 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/volunteers"
 						render={(props) => {
-							return null;
+							return <Volunteers {...props}/>;
 						}}
 					/>
 					<Route
