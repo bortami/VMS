@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   Box,
   Button,
-  CheckBox,
   Table,
   TextInput,
   TableHeader,
@@ -11,7 +10,7 @@ import {
   TableBody,
   Heading
 } from "grommet";
-import { Search, Checkbox, Star, StarHalf } from "grommet-icons";
+import { Search } from "grommet-icons";
 
 export default class Volunteers extends Component {
   state = {
@@ -99,9 +98,7 @@ export default class Volunteers extends Component {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell scope="col">
-                  <CheckBox />
-                </TableCell>
+                <TableCell scope="col" />
                 <TableCell scope="col">Name</TableCell>
 
                 <TableCell scope="col">Date Joined</TableCell>
@@ -112,9 +109,6 @@ export default class Volunteers extends Component {
               {this.state.volunteers.map(volunteer => {
                 return (
                   <TableRow>
-                    <TableCell scope="row">
-                      <Checkbox />
-                    </TableCell>
                     <TableCell>
                       <span
                         onClick={() => {
