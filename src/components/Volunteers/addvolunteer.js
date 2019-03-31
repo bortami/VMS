@@ -1,4 +1,14 @@
 import React, { Component } from "react";
+import {
+  Box,
+  Button,
+  Form,
+  TextInput,
+  TextArea,
+  Paragraph,
+  Heading,
+  Select
+} from "grommet";
 
 export default class AddVolunteer extends Component {
   // Set initial state
@@ -9,9 +19,9 @@ export default class AddVolunteer extends Component {
     image: "",
     gender: "",
     location: "",
-    dateJoined: "",
-    organizationId: "",
-    notes: ""
+    notes: "",
+    options: ["Female", "Male", "Other"],
+    value: ""
   };
 
   // Update state whenever an input field is edited
@@ -36,7 +46,7 @@ export default class AddVolunteer extends Component {
       location: this.state.location,
       dateJoined: new Date(),
       // Make sure the employeeId is saved to the database as a number since it is a foreign key.
-      organizationId: parseInt(this.state.organizationId),
+      organizationId: parseInt(sessionStorage.getItem("userId")),
       notes: this.state.notes
     };
 
@@ -47,6 +57,87 @@ export default class AddVolunteer extends Component {
   };
 
   render() {
-    return <React.Fragment>stuff</React.Fragment>;
+    const { options, value } = this.state;
+    return (
+      <Box direction="column">
+        <Heading level={2}>Add Volunteer Information</Heading>
+        <Form>
+          <Paragraph>
+            Name:
+            <TextInput
+              name="name"
+              id="name"
+              label="Name"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Paragraph>
+            Email:
+            <TextInput
+              name="email"
+              id="email"
+              label="Email"
+              type="email"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Paragraph>
+            Phone Number:
+            <TextInput
+              name="phone"
+              id="phone"
+              label="Phone Number"
+              type="tel"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Paragraph>
+            Link to Image:
+            <TextInput
+              name="image"
+              id="image"
+              label="Image Link"
+              type="url"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Paragraph>
+            Gender:
+            <Select
+              id="gender"
+              name="gender"
+              placeholder="Select Gender"
+              value={value}
+              options={options}
+              onChange={({ option }) => this.setState({ gender: option })}
+            />
+          </Paragraph>
+          <Paragraph>
+            Location:
+            <TextInput
+              name="location"
+              id="location"
+              label="Location"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Paragraph>
+            Additional Notes:
+            <TextArea
+              name="notes"
+              id="notes"
+              label="Notes"
+              onChange={this.handleFieldChange}
+            />
+          </Paragraph>
+          <Button
+            type="submit"
+            primary
+            label="Submit"
+            onClick={this.constructNewVolunteer}
+          />
+        </Form>
+      </Box>
+    );
   }
 }
