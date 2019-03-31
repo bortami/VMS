@@ -23,30 +23,23 @@ export default class NavBar extends Component {
 				<Menu
 					label="Volunteers"
 					items={[
-						{ icon: '', label: 'Your Volunteers', href: '/volunteers' },
-						{ icon: <Group />, label: 'Groups', href: 'volunteers/groups' }
+						{ icon: '', label: 'All Volunteers', href: '/volunteers' },
+						{ icon: '', label: 'Add Volunteer', href: 'volunteers/add' }
 					]}
 				/>
 				<Menu
 					label="Projects"
 					items={[
-						{ label: 'Your Projects', href: '/projects' },
-						{ label: 'Create', href: '/projects/create' }
+						{ label: 'All Projects', href: '/projects' },
+						{ label: 'Add Project', href: '/projects/add' }
 					]}
 				/>
-				<Menu
-					label="Reports"
-					items={[
-						{ label: 'Projects', href: '/reports/projects' },
-						{ label: 'Volunteers', href: '/reports/volunteers' },
-						{ label: 'Hours', href: '/reports/hours' }
-					]}
-				/>
+				{/*Re-Add once you add report functionality */}
+				{/* <Menu label="Reports" items={[ { label: 'All Reports', href: '/reports' } ]} /> */}
 				<Menu
 					label="Account"
 					items={[
-						{ icon: <User />, label: 'Your Profile', href: '/account/userprofile' },
-						{ icon: <Organization />, label: 'Your Organization', href:'/account/orgprofile' },
+						{ icon: <Organization />, label: 'Your Profile', href: '/profile' },
 						{ icon: <PowerShutdown />, label: 'Logout', onClick: () => {} }
 					]}
 				/>
