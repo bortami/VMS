@@ -97,7 +97,7 @@ export default class Volunteers extends Component {
         </Box>
         <Box elevation="medium" pad="medium" width="50vw">
           <Box direction="row" justify="between">
-            Volunteer Results
+            Volunteers
             <Button
               label="Add Volunteer"
               type="button"

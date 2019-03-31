@@ -3,11 +3,17 @@ import { Route } from "react-router-dom";
 import { Box } from "grommet";
 import LandingPage from "./components/landingPage/landingPage";
 import Volunteers from "./components/Volunteers/volunteers";
+import AddVolunteer from "./components/Volunteers/addvolunteer";
 import api from "./modules/apiManager";
 
 export default class ApplicationViews extends Component {
   state = {};
 
+  addVolunteer = volunteer =>
+    api
+      .post(volunteer, "volunteers")
+      .then(() => api.all("volunteers"))
+      .then(volunteers => this.setState({ volunteers: volunteers }));
   componentDidMount() {
     const newState = {};
     api.all("volunteers").then(parsedVolunteers => {
@@ -105,7 +111,9 @@ export default class ApplicationViews extends Component {
           <Route
             path="/volunteers/add"
             render={props => {
-              return null;
+              return (
+                <AddVolunteer {...props} addVolunteer={this.addVolunteer} />
+              );
             }}
           />
           <Route
