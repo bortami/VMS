@@ -72,7 +72,7 @@ export default class ApplicationViews extends Component {
                 <LandingPage
                   {...props}
                   projects={this.state.projects}
-                  organizations={this.state.organizations}
+                  
                 />
               );
             }}
@@ -80,32 +80,15 @@ export default class ApplicationViews extends Component {
           <Route
             exact
             path="/volunteers"
-            render={props => {
+            render={(props) => {
               return (
                 <Volunteers
                   {...props}
-                  volunteers={this.state.volunteers}
+                  people={this.state.volunteers}
                   hours={this.state.hours}
+
                 />
               );
-            }}
-          />
-          <Route
-            path="/volunteers/groups"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/volunteers/invite"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/volunteers/blocked"
-            render={props => {
-              return null;
             }}
           />
           <Route
@@ -117,7 +100,7 @@ export default class ApplicationViews extends Component {
             }}
           />
           <Route
-            path="/volunteers/editvolunteer"
+            path="/volunteers/edit"
             render={props => {
               return null;
             }}
@@ -130,7 +113,7 @@ export default class ApplicationViews extends Component {
             }}
           />
           <Route
-            path="/projects/create"
+            path="/projects/add"
             render={props => {
               return null;
             }}
@@ -154,24 +137,7 @@ export default class ApplicationViews extends Component {
               return null;
             }}
           />
-          <Route
-            path="/reports/projects"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/reports/volunteers"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/reports/hours"
-            render={props => {
-              return null;
-            }}
-          />
+          
           <Route
             exact
             path="/profile"
@@ -185,19 +151,7 @@ export default class ApplicationViews extends Component {
               return null;
             }}
           />
-          <Route
-            exact
-            path="/organization"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/organization/edit"
-            render={props => {
-              return null;
-            }}
-          />
+          
           <Route
             exact
             path="/help"
@@ -211,49 +165,10 @@ export default class ApplicationViews extends Component {
               return null;
             }}
           />
-          <Route
-            path="/help/contact"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            path="/help/tc"
-            render={props => {
-              return null;
-            }}
-          />
+         
           <Route
             exact
             path="/results"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            exact
-            path="/myprojects"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            exact
-            path="/apply"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            exact
-            path="/loghours"
-            render={props => {
-              return null;
-            }}
-          />
-          <Route
-            exact
-            path="/feedback"
             render={props => {
               return null;
             }}
