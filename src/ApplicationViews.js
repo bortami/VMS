@@ -103,7 +103,7 @@ export default class ApplicationViews extends Component {
             }}
           />
           <Route
-            path="/volunteers/addvolunteer"
+            path="/volunteers/add"
             render={props => {
               return null;
             }}

@@ -76,25 +76,36 @@ export default class Volunteers extends Component {
         flex
         overflow={{ horizontal: "hidden" }}
       >
-        <Box direction="row" pad="medium" width="50vw" align="center">
-          <TextInput
-            placeholder="Search by Name or email address"
-            onChange={e => this.handleFieldChange(e)}
-            id="search"
-            name="search-input"
-          />
-          <Button icon={<Search />} label="Search" onClick={() => {}} />
-        </Box>
-        <Box direction="row" pad="medium" align="center">
-          <Heading level={4} pad="medium">
-            Quick Search:{" "}
-          </Heading>
-          <Button label="Top Hours" />
-          <Button label="Top Rated" />
-          <Button label="Newest" />
+        <Box direction="column" pad="medium" width="50vw" align="center">
+          <Box fill="horizontal" direction="row">
+            <TextInput
+              placeholder="Search by Name or email address"
+              onChange={e => this.handleFieldChange(e)}
+              id="search"
+              name="search-input"
+            />
+            <Button icon={<Search />} label="Search" onClick={() => {}} />
+          </Box>
+          <Box direction="row" pad="medium" align="center">
+            <Heading level={4} pad="medium">
+              Quick Search:{" "}
+            </Heading>
+            <Button label="Top Hours" />
+            <Button label="Top Rated" />
+            <Button label="Newest" />
+          </Box>
         </Box>
         <Box elevation="medium" pad="medium" width="50vw">
-          Volunteer Results
+          <Box direction="row" justify="between">
+            Volunteer Results
+            <Button
+              label="Add Volunteer"
+              type="button"
+              onClick={() => {
+                this.props.history.push("/volunteers/add");
+              }}
+            />
+          </Box>
           <Table>
             <TableHeader>
               <TableRow>
