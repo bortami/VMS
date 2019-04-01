@@ -117,6 +117,7 @@ export default class ApplicationViews extends Component {
 									delete={this.deleteVolunteer}
 									route="volunteers"
 									volunteers={this.state.volunteers}
+									projects={this.state.projects}
 								/>
 							);
 						}}

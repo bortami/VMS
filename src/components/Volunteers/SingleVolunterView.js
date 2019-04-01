@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
-
-import { Box, Image, Heading, Anchor, Layer, Button } from 'grommet';
+import api from '../../modules/apiManager';
+import { Box, Image, Heading, Anchor, Layer, Button, Select } from 'grommet';
 import { MailOption, AddCircle, Trash, Close } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
-	state = {};
+	state = {
+		openDelete: undefined,
+		openProjectList: undefined,
+		value: '',
+		options: []
+	};
 
-	onOpen = () => this.setState({ open: true });
+	onOpenDelete = () => this.setState({ openDelete: true });
+	onOpenProjectList = () => this.setState({ openProjectList: true });
 
-	onClose = () => this.setState({ open: undefined });
+	onCloseDelete = () => this.setState({ openDelete: undefined });
+	onCloseProjectList = () => this.setState({ openProjectList: undefined });
+	
+	componentDidMount() {
+		const newState =[];
+		this.props.projects.forEach(project => newState.concat(project.name))
+		this.setState({options: newState})
+	}
+
 	render() {
-		const { open } = this.state;
+
+		const { openDelete,openProjectList, value } = this.state;
+		const options = this.props.projects.map(project => project.name)
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
@@ -24,13 +40,33 @@ export default class SingleVolunteerView extends Component {
 						<Anchor href={`mailto:${volunteer.email}`} margin="small">
 							<MailOption />
 						</Anchor>
-						<Anchor onClick={() => {}} margin="small">
+						<Anchor onClick={this.onOpenProjectList} margin="small">
 							<AddCircle />
 						</Anchor>
-						<Anchor onClick={this.onOpen} margin="small">
+						{openProjectList && (
+							<Layer position="top-right">
+								<Box height="small" overflow="auto" elevation="medium">
+									<Box pad="medium">Select a Project:</Box>
+									<Box pad="medium">
+										<Select 
+										id="projectOptions"
+										name="projectOptions"
+										placeholder="Select a Project"
+										value={value}
+										options={options}
+										onChange={({ option }) => this.setState({ gender: option, value: option })}
+										/>
+									</Box>
+									<Box align="center">
+										<Button icon={<Close />} onClick={this.onCloseProjectList} />
+									</Box>
+								</Box>
+							</Layer>
+						)}
+						<Anchor onClick={this.onOpenDelete} margin="small">
 							<Trash />
 						</Anchor>
-						{open && (
+						{openDelete && (
 							<Layer position="top-right">
 								<Box height="small" overflow="auto" elevation="medium">
 									<Box pad="medium">
@@ -43,14 +79,18 @@ export default class SingleVolunteerView extends Component {
 											onClick={this.props.delete(volunteer.id)}
 											label="Yes, Delete Them"
 										/>
-										<Button primary icon={<Close />} onClick={this.onClose} label="No, Nevermind" />
+										<Button
+											primary
+											icon={<Close />}
+											onClick={this.onCloseDelete}
+											label="No, Nevermind"
+										/>
 									</Box>
 								</Box>
 							</Layer>
 						)}
 					</Box>
 				</Box>
-                
 			</Box>
 		);
 	}
