@@ -8,9 +8,21 @@
       "image": "https://",
       "gender": "Female",
       "location": "Huntington, WV",
-      "dateRegistered": "04/01/2019",
+      "dateJoined": "04/01/2019",
       "organizationId": 1,
       "notes": "always brings lunch"
+    },
+    {
+      "name": "Michelle Tabor",
+      "email": "taborbooks@gmail.com",
+      "phone": "304-751-5460",
+      "image": "",
+      "gender": "Female",
+      "location": "West Hamlin, WV",
+      "dateJoined": "2019-04-01T17:08:37.691Z",
+      "organizationId": 1,
+      "notes": "She's awesome and amazing. ",
+      "id": 2
     }
   ],
   "organizations": [
@@ -64,31 +76,31 @@
       "genderRestricted": "No"
     }
   ],
-  "skills":[
-	  {
-		  "id":1,
-		  "name": "Planting"
-	  }
+  "skills": [
+    {
+      "id": 1,
+      "name": "Planting"
+    }
   ],
-  "volunteersProjects":[
-	  {
-		  "id":1,
-		  "volunteerId": 1,
-		  "projectId": 1
-	  }
+  "volunteersProjects": [
+    {
+      "id": 1,
+      "volunteerId": 1,
+      "projectId": 1
+    }
   ],
   "volunteersSkills": [
-	  {
-		  "id": 1,
-		  "skillId":1,
-		  "volunteerId":1
-	  }
+    {
+      "id": 1,
+      "skillId": 1,
+      "volunteerId": 1
+    }
   ],
-  "projectsSkills":[
-	  {
-		  "id":1,
-		  "projectId": 1,
-		  "skillId":1
-	  }
+  "projectsSkills": [
+    {
+      "id": 1,
+      "projectId": 1,
+      "skillId": 1
+    }
   ]
 }
