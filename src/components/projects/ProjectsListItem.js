@@ -12,7 +12,7 @@ export default class ProjectsListItem extends Component {
 		}
 	};
 	totalHours = (singleProject) => {
-		return null;
+		return "N/A";
 	};
 	render() {
 		return (

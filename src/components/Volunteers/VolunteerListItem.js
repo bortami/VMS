@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TableCell, TableRow, CheckBox } from 'grommet';
+import Moment from "react-moment"
 
 export default class VolunteerListItem extends Component {
 	render() {
@@ -18,7 +19,7 @@ export default class VolunteerListItem extends Component {
 					</span>
 				</TableCell>
 
-				<TableCell>{this.props.volunteer.dateRegistered}</TableCell>
+				<TableCell><Moment format="MM/DD/YYYY">{this.props.volunteer.dateJoined}</Moment></TableCell>
 				<TableCell>{this.props.totalHours(this.props.volunteer.id)}</TableCell>
 			</TableRow>
 		);

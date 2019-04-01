@@ -6,25 +6,32 @@ import VolunteerList from './components/Volunteers/VolunteerList';
 import AddVolunteer from './components/Volunteers/addvolunteer';
 import api from './modules/apiManager';
 import ProjectList from './components/projects/ProjectsList';
+import AddProject from "./components/projects/AddProject"
 
 export default class ApplicationViews extends Component {
 	state = {
-    volunteers: [],
-    organizations: [],
-    projects:[],
-    categories:[],
-    skills:[],
-    projectSkills:[],
-    volunteersProjects: [],
-    volunteersSkills:[],
-    hours:[],
-  };
+		volunteers: [],
+		organizations: [],
+		projects: [],
+		categories: [],
+		skills: [],
+		projectSkills: [],
+		volunteersProjects: [],
+		volunteersSkills: [],
+		hours: []
+	};
 
 	addVolunteer = (volunteer) =>
 		api
 			.post(volunteer, 'volunteers')
 			.then(() => api.all('volunteers'))
 			.then((volunteers) => this.setState({ volunteers: volunteers }));
+
+	addProject = (project) =>
+		api
+			.post(project, 'projects')
+			.then(() => api.all('projects'))
+			.then((projects) => this.setState({ projects: projects }));
 	componentDidMount() {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
@@ -58,7 +65,7 @@ export default class ApplicationViews extends Component {
 	}
 
 	render() {
-    return (
+		return (
 			<Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
 				<Box flex align="center" justify="center">
 					<Route
@@ -107,13 +114,20 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/projects"
 						render={(props) => {
-							return <ProjectList {...props} projects={this.state.projects} hours={this.state.hours} volunteers={this.state.volunteersProjects}/>;
+							return (
+								<ProjectList
+									{...props}
+									projects={this.state.projects}
+									hours={this.state.hours}
+									volunteers={this.state.volunteersProjects}
+								/>
+							);
 						}}
 					/>
 					<Route
 						path="/projects/add"
 						render={(props) => {
-							return null;
+							return <AddProject {...props} addProject={this.addProject} />;
 						}}
 					/>
 					<Route
