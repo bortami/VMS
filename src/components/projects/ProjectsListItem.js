@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { CheckBox, TableCell, TableRow } from 'grommet';
+import Moment from "react-moment";
 
 export default class ProjectsListItem extends Component {
 	totalVolunteers = (project) => {
@@ -30,7 +31,7 @@ export default class ProjectsListItem extends Component {
 						{this.props.singleProject.name}
 					</span>
 				</TableCell>
-				<TableCell>{this.props.singleProject.date}</TableCell>
+				<TableCell><Moment format="MM/DD/YYYY">{this.props.singleProject.date}</Moment></TableCell>
 				<TableCell>{this.totalVolunteers(this.props.singleProject)}</TableCell>
 				<TableCell>{this.totalHours(this.props.singleProject)}</TableCell>
 			</TableRow>
