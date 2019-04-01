@@ -47,6 +47,7 @@
     {
       "id": 1,
       "name": "Field Day",
+      "date": "04/01/2018",
       "shortDescription": "a day to work in the field",
       "categoryId": 1,
       "organizationId": 1,

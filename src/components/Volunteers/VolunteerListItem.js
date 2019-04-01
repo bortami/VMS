@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { TableCell, TableRow } from 'grommet';
+import { TableCell, TableRow, CheckBox } from 'grommet';
 
 export default class VolunteerListItem extends Component {
 	render() {
 		return (
 			<TableRow>
+				<TableCell>
+					<CheckBox />
+				</TableCell>
 				<TableCell>
 					<span
 						onClick={() => {

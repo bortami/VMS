@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
-import { Box, Button, Heading, Table, TableBody, TableCell, TableHeader, TableRow, TextInput } from 'grommet';
+import { Box, Button, Heading, Table, TableBody, TableCell, TableHeader, TableRow, TextInput, CheckBox } from 'grommet';
 import { Search } from 'grommet-icons';
-import VolunteerListItem from './VolunteerListItem';
+import ProjectsListItem from './ProjectsListItem';
 
-export default class Volunteers extends Component {
+export default class ProjectList extends Component {
 	state = {
 		search: '',
-		volunteers: []
+		Projects: []
 	};
-
-	totalHours = (volunteerId) => {
-		const hours = [].reduce((a, b) => a + b, 0);
-		if (this.props.hours.volunteer_Id === volunteerId) {
-			hours.push(this.props.hours.quanity);
-			return hours;
-		} else {
-			return 'N/A';
-		}
-	};
-
 	handleFieldChange = (e) => {
 		const stateToChange = {};
 		stateToChange[e.target.id] = e.target.value;
@@ -35,7 +24,7 @@ export default class Volunteers extends Component {
 				flex
 				overflow={{ horizontal: 'hidden' }}
 			>
-      {/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
+				{/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
 				{/* <Box direction="column" pad="medium" width="50vw" align="center">
 					<Box fill="horizontal" direction="row">
 						<TextInput
@@ -55,44 +44,41 @@ export default class Volunteers extends Component {
 						<Button label="Newest" />
 					</Box>
 				</Box> */}
-				<Box elevation="medium" pad="medium" width="50vw">
+				<Box elevation="medium" pad="medium">
 					<Box direction="row" justify="between">
-						Volunteers
+						Projects
 						<Button
-							label="Add Volunteer"
+							label="Add Project"
 							type="button"
 							onClick={() => {
-								this.props.history.push('/volunteers/add');
+								this.props.history.push('/projects/add');
 							}}
 						/>
 					</Box>
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableCell scope="col" />
+								<TableCell scope="col">
+									<CheckBox />
+								</TableCell>
 								<TableCell scope="col">Name</TableCell>
-
-								<TableCell scope="col">Date Joined</TableCell>
+								<TableCell scope="col">Date Created</TableCell>
+								<TableCell scope="col">Total Volunteers</TableCell>
 								<TableCell scope="col">Hours Logged</TableCell>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{this.state.volunteers.map((volunteer) => {
+							{this.props.projects.map((project) => {
 								return (
-									<VolunteerListItem
+									<ProjectsListItem
 										{...this.props}
-										volunteer={volunteer}
-										totalHours={this.totalHours}
+										singleProject={project}
+										hours={this.props.hours}
 									/>
 								);
 							})}
 						</TableBody>
 					</Table>
-					<Box direction="row" pad="mediium" align="center">
-						<Button label="Add to Project" />
-
-						<Button label="Generate List" />
-					</Box>
 				</Box>
 			</Box>
 		);
