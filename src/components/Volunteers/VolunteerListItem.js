@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { TableCell, TableRow, CheckBox } from 'grommet';
-import Moment from "react-moment"
+import Moment from 'react-moment';
 
 export default class VolunteerListItem extends Component {
 	render() {
@@ -10,16 +11,14 @@ export default class VolunteerListItem extends Component {
 					<CheckBox />
 				</TableCell>
 				<TableCell>
-					<span
-						onClick={() => {
-							this.props.history.push(`/profile/${this.props.volunteer.id}`);
-						}}
-					>
+					<Link id={this.props.volunteer.id} to={`/volunteers/${this.props.volunteer.id}`}>
 						{this.props.volunteer.name}
-					</span>
+					</Link>
 				</TableCell>
 
-				<TableCell><Moment format="MM/DD/YYYY">{this.props.volunteer.dateJoined}</Moment></TableCell>
+				<TableCell>
+					<Moment format="MM/DD/YYYY">{this.props.volunteer.dateJoined}</Moment>
+				</TableCell>
 				<TableCell>{this.props.totalHours(this.props.volunteer.id)}</TableCell>
 			</TableRow>
 		);

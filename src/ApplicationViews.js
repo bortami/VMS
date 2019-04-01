@@ -4,9 +4,10 @@ import { Box } from 'grommet';
 import LandingPage from './components/landingPage/landingPage';
 import VolunteerList from './components/Volunteers/VolunteerList';
 import AddVolunteer from './components/Volunteers/addvolunteer';
+import SingleVolunteerView from './components/Volunteers/SingleVolunterView';
 import api from './modules/apiManager';
 import ProjectList from './components/projects/ProjectsList';
-import AddProject from "./components/projects/AddProject"
+import AddProject from './components/projects/AddProject';
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -26,7 +27,9 @@ export default class ApplicationViews extends Component {
 			.post(volunteer, 'volunteers')
 			.then(() => api.all('volunteers'))
 			.then((volunteers) => this.setState({ volunteers: volunteers }));
-
+	deleteVolunteer = (volunteerId) => {
+		return null;
+	};
 	addProject = (project) =>
 		api
 			.post(project, 'projects')
@@ -105,9 +108,17 @@ export default class ApplicationViews extends Component {
 						}}
 					/>
 					<Route
-						path="/volunteers/edit"
+						exact
+						path="/volunteers/:volunteerId(\d+)"
 						render={(props) => {
-							return null;
+							return (
+								<SingleVolunteerView
+									{...props}
+									delete={this.deleteVolunteer}
+									route="volunteers"
+									volunteers={this.state.volunteers}
+								/>
+							);
 						}}
 					/>
 					<Route
