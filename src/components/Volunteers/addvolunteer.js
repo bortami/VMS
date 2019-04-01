@@ -109,7 +109,7 @@ export default class AddVolunteer extends Component {
               placeholder="Select Gender"
               value={value}
               options={options}
-              onChange={({ option }) => this.setState({ gender: option })}
+              onChange={({ option }) => this.setState({ gender: option, value: option })}
             />
           </Paragraph>
           <Paragraph>
