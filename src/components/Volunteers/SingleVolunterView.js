@@ -50,7 +50,7 @@ export default class SingleVolunteerView extends Component {
 						)}
 					</Box>
 				</Box>
-                <Box direction
+                
 			</Box>
 		);
 	}
