@@ -17,7 +17,7 @@ import {
 	TableBody,
 	Paragraph
 } from 'grommet';
-import { MailOption, AddCircle, Trash, Close, Checkmark } from 'grommet-icons';
+import { MailOption, AddCircle, Trash, Close, Checkmark, Edit } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
 	state = {
@@ -34,11 +34,11 @@ export default class SingleVolunteerView extends Component {
 
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
-	skillList = (Id) => {
+
+	skillList = () => {
 		//Error. it works on one go around, then it hits it again and deletes what was placed there, actually it's running everytime I take an action on the page//
-		debugger;
 		const list = this.state.skills
-			.filter((skill) => Id === this.state.skills.volunteerId)
+			.filter((skill) => skill.id === this.state.skills.volunteerId)
 			.map((skill) => <Text>{skill.skill.name}</Text>);
 		return list;
 	};
@@ -60,7 +60,7 @@ export default class SingleVolunteerView extends Component {
 			<Box key={volunteer.id} direction="column" width="horizontal" basis="full">
 				<Box direction="row" align="between" width="horizontal" elevation="medium">
 					<Box alignSelf="start">
-						<Image src={volunteer.image} />
+						<Image width="200px" src={volunteer.image} />
 					</Box>
 					<Heading level={3}>{volunteer.name}</Heading>
 					<Box id="icons" direction="row">
@@ -73,7 +73,7 @@ export default class SingleVolunteerView extends Component {
 						{openProjectList && (
 							<Layer position="top-right">
 								<Box height="small" overflow="auto" elevation="medium">
-									<Box pad="medium">Select a Project:</Box>
+									<Box pad="small">Select a Project:</Box>
 									<Box pad="medium">
 										<Form>
 											<Select
@@ -94,15 +94,23 @@ export default class SingleVolunteerView extends Component {
 								</Box>
 							</Layer>
 						)}
+						<Anchor
+							onClick={() => {
+								this.props.history.push(`/volunteers/${volunteer.id}/edit`);
+							}}
+							margin="small"
+						>
+							<Edit />
+							{/*This only allows you to edit the volunteer's personal information */}
+						</Anchor>
 						<Anchor onClick={this.onOpenDelete} margin="small">
 							<Trash />
 						</Anchor>
 						{openDelete && (
-							<Layer position="top-right">
+							<Layer position="top-left">
 								<Box height="small" overflow="auto" elevation="medium">
 									<Box pad="medium">
-										Are you sure you want to delete {volunteer.name.split(' ')[0]}? This is
-										permanent and cannot be undone!
+										Are you sure you want to delete this volunteer? This is permanent and cannot be undone!
 									</Box>
 									<Box pad="medium">
 										<Button
@@ -132,11 +140,14 @@ export default class SingleVolunteerView extends Component {
 						</Box>
 						<Box>
 							<Heading level={5}>Skills</Heading>
+							{/* I'd like to add another modal that opens on edit of the skills*/}
 							{this.skillList(volunteer.id)}
 						</Box>
 						<Box elevation="small">
 							<Heading level={5}>Admin Notes:</Heading>
-							<Paragraph>{volunteer.notes}</Paragraph>
+							<Paragraph size="small" width="20vw">
+								{volunteer.notes}
+							</Paragraph>
 						</Box>
 					</Box>
 

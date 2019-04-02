@@ -1,125 +1,97 @@
 {
-	"volunteers": [
-		{
-			"id": 1,
-			"name": "Susan Caltrop",
-			"email": "sue@email.com",
-			"phone": "304-690-0505",
-			"image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAG1BMVEXd3d0AAAAbGxtSUlJubm6KiorBwcE3NzelpaXRvgM/AAACO0lEQVR4nO3Y3bKjIBBGUWkM8P5PPBGhJcTMyF/VXOx1c6w+VV+jgkG3DQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8rt1sx3r7KWniXjOzuX7V1Ue1eJhHNdT7X9u1vtYVR7XZzCanmr5K2uquti2rnzit43GpjfDEgsb4c0V1tXVSHmHrMaZ8Ptk3SQNxxYLeftXVRHUSvnsmxcaY7Pdp+1RZGdbguns3j2HVATm/+XW1hVDunlyc2kDwMW43trrYuqkO46e4/p/P+q7YuqkMxTW3uLjedvmvXvEgTqT9qCvd2pfqG7jpFJJ1Rf9RUQSfsw+4hXfb8dyBqKq9T/Gl3f94J+7Vi26Mmeumz/3H3cNakviEdURPJ9cx53D2eQvgaTE/UNMf8yJmPux+XPlgd9UjULHF55gnyvPtxJNV+qTNqDlfMhpbu7x8+qW5Ib9QcVp+Xbd3PjbufETXFy3wENnQXUw2lP2oCV13WgTvSHzXD8fslxTxvWiPlihiJmiCOpnwreL5llXOx7xOixoV6mpeddOXe1eKC2Isf9oGoCYo7negmvNqq17Vzs1VstQaixl2x6nqpjlPlZ82ZvEXxo1HjztnwUrEYXydc+mf56eOztpu8aYzjGokap98Gk6uYPjzlZ9BNLb1Q2bQwRqIWnUj5KVDX4letfrEaiFp2IvrxU4pGdU2fPnIOaCBq3Yls4X3nxdef0Mva/ceHrigAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgmT+dGhGQhT/RxQAAAABJRU5ErkJggg==",
-			"gender": "Female",
-			"location": "Huntington, WV",
-			"dateJoined": "04/01/2019",
-			"organizationId": 1,
-			"notes": "always brings lunch"
-		},
-		{
-			"name": "Michelle Tabor",
-			"email": "taborbooks@gmail.com",
-			"phone": "304-751-5460",
-			"image": "",
-			"gender": "Female",
-			"location": "West Hamlin, WV",
-			"dateJoined": "2019-04-01T17:08:37.691Z",
-			"organizationId": 1,
-			"notes": "She's awesome and amazing. ",
-			"id": 2
-		}
-	],
-	"organizations": [
-		{
-			"id": 1,
-			"name": "Alliance for Alliances",
-			"location": "123 North Street, H-Town, WV 25701",
-			"email": "info@a4a.org",
-			"password": "s",
-			"image": "https://"
-		}
-	],
-	"categories": [
-		{
-			"id": 1,
-			"name": "Environment"
-		},
-		{
-			"id": 2,
-			"name": "Animal Welfare"
-		}
-	],
-	"hours": [
-		{
-			"id": 1,
-			"quantity": 5,
-			"value": 33.5,
-			"projectId": 1,
-			"volunteerId": 1,
-			"skillId": 1
-		}
-	],
-	"projects": [
-		{
-			"id": 1,
-			"name": "Field Day",
-			"date": "04/01/2018",
-			"shortDescription": "a day to work in the field",
-			"categoryId": 1,
-			"organizationId": 1,
-			"street": "123 High Street",
-			"city": "Htown",
-			"State": "WV",
-			"zip": "25705",
-			"specialInstructions": "Do NOT park in grass!",
-			"restrictions": "must be physically able to do the work",
-			"experience": "None needed",
-			"maxVolunteers": 15,
-			"minAge": 15,
-			"maxAge": 100,
-			"genderRestricted": "No"
-		},
-		{
-			"name": "Rape Crisis Intervention Call Center",
-			"shortDescription": "provides emergency support to female victims of rape",
-			"categoryId": "",
-			"street": "55 North Street",
-			"city": "Barboursville",
-			"State": "WV",
-			"zip": "25504",
-			"specialInstructions": "Always remain calm.",
-			"restrictions": "No previous sex-related crime convictions.",
-			"experience": "WV Crisis Counselor Certification",
-			"maxVolunteers": "12",
-			"minAge": "18",
-			"maxAge": "150",
-			"genderRestricted": "",
-			"date": "2019-04-01T17:54:34.916Z",
-			"organizationId": 1,
-			"id": 2
-		}
-	],
-	"skills": [
-		{
-			"id": 1,
-			"name": "Planting"
-		}
-	],
-	"volunteersProjects": [
-		{
-			"id": 1,
-			"volunteerId": 1,
-			"projectId": 1
-		}
-	],
-	"volunteersSkills": [
-		{
-			"id": 1,
-			"skillId": 1,
-			"volunteerId": 1
-		}
-	],
-	"projectsSkills": [
-		{
-			"id": 1,
-			"projectId": 1,
-			"skillId": 1
-		}
-	]
+  "volunteers": [
+    {
+      "name": "Person Tabor",
+      "email": "taborbooks@gmail.com",
+      "phone": "304-751-5460",
+      "image": "",
+      "gender": "Female",
+      "location": "West Hamlin, WV",
+      "dateJoined": "2019-04-01T17:08:37.691Z",
+      "organizationId": 1,
+      "notes": "She's awesome and amazing. ",
+      "id": 1
+    },
+    {
+      "name": "Michelle Tabor",
+      "email": "taborbooks@gmail.com",
+      "phone": "304-751-5460",
+      "image": "",
+      "gender": "Female",
+      "location": "West Hamlin, WV",
+      "dateJoined": "2019-04-01T17:08:37.691Z",
+      "organizationId": 1,
+      "notes": "She's awesome and amazing. ",
+      "id": 2
+    },
+    {
+      "name": "Lt. Dangle",
+      "email": "JoJobeans@gmail.com",
+      "phone": "304-555-7562",
+      "image": "https://bit.ly/2WDOZ9h",
+      "gender": "Male",
+      "location": "Chesapeake, OH",
+      "dateJoined": "2019-04-02T14:08:09.192Z",
+      "organizationId": 1,
+      "notes": "has a thing for too short shorts, but works hard.",
+      "id": 3
+    }
+  ],
+  "organizations": [
+    {
+      "id": 1,
+      "name": "Alliance for Alliances",
+      "location": "123 North Street, H-Town, WV 25701",
+      "email": "info@a4a.org",
+      "password": "s",
+      "image": "https://"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Environment"
+    },
+    {
+      "id": 2,
+      "name": "Animal Welfare"
+    }
+  ],
+  "hours": [],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Field Day",
+      "date": "04/01/2018",
+      "shortDescription": "a day to work in the field",
+      "categoryId": 1,
+      "organizationId": 1,
+      "street": "123 High Street",
+      "city": "Htown",
+      "State": "WV",
+      "zip": "25705",
+      "specialInstructions": "Do NOT park in grass!",
+      "restrictions": "must be physically able to do the work",
+      "experience": "None needed",
+      "maxVolunteers": 15,
+      "minAge": 15,
+      "maxAge": 100,
+      "genderRestricted": "No"
+    }
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "name": "Planting"
+    }
+  ],
+  "volunteersProjects": [],
+  "volunteersSkills": [],
+  "projectsSkills": [
+    {
+      "id": 1,
+      "projectId": 1,
+      "skillId": 1
+    }
+  ]
 }

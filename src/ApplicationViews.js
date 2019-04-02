@@ -5,6 +5,7 @@ import LandingPage from './components/landingPage/landingPage';
 import VolunteerList from './components/Volunteers/VolunteerList';
 import AddVolunteer from './components/Volunteers/addvolunteer';
 import SingleVolunteerView from './components/Volunteers/SingleVolunterView';
+import SingleVolunteerEditForm from './components/Volunteers/SingleVolunteerEditForm';
 import api from './modules/apiManager';
 import ProjectList from './components/projects/ProjectsList';
 import AddProject from './components/projects/AddProject';
@@ -27,14 +28,29 @@ export default class ApplicationViews extends Component {
 			.post(volunteer, 'volunteers')
 			.then(() => api.all('volunteers'))
 			.then((volunteers) => this.setState({ volunteers: volunteers }));
-	deleteVolunteer = (volunteerId) => {
-		return null;
+
+	deleteVolunteer = (id) => {
+		api.deleteAndList('volunteers', id).then((volunteers) => this.setState({ volunteers: volunteers }));
+	};
+
+	updateVolunteer = (editedVolunteerObject) => {
+		return api.put('volunteers', editedVolunteerObject).then(() => api.all('volunteers')).then((volunteers) => {
+			this.setState({
+				volunteers: volunteers
+			});
+		});
 	};
 	addProject = (project) =>
 		api
 			.post(project, 'projects')
 			.then(() => api.all('projects'))
 			.then((projects) => this.setState({ projects: projects }));
+
+	refresh = (what) =>
+		api.all(what).then((parsed) => {
+			this.setState({ what: parsed });
+		});
+
 	componentDidMount() {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
@@ -118,6 +134,21 @@ export default class ApplicationViews extends Component {
 									route="volunteers"
 									volunteers={this.state.volunteers}
 									projects={this.state.projects}
+								/>
+							);
+						}}
+					/>
+					<Route
+						path="/volunteers/:volunteerId(\d+)/edit"
+						render={(props) => {
+							return (
+								<SingleVolunteerEditForm
+									{...props}
+									volunteers={this.state.volunteers}
+									projects={this.state.projects}
+									skills={this.state.skills}
+									updateVolunteer={this.updateVolunteer}
+									route="volunteers"
 								/>
 							);
 						}}
