@@ -57,121 +57,140 @@ export default class SingleVolunteerView extends Component {
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
-			<Box key={volunteer.id} direction="column" width="horizontal" basis="full">
-				<Box direction="row" align="between" width="horizontal" elevation="medium">
-					<Box alignSelf="start">
-						<Image width="200px" src={volunteer.image} />
-					</Box>
-					<Heading level={3}>{volunteer.name}</Heading>
-					<Box id="icons" direction="row">
-						<Anchor href={`mailto:${volunteer.email}`} margin="small">
-							<MailOption />
-						</Anchor>
-						<Anchor onClick={this.onOpenProjectList} margin="small">
-							<AddCircle />
-						</Anchor>
-						{openProjectList && (
-							<Layer position="top-right">
-								<Box height="small" overflow="auto" elevation="medium">
-									<Box pad="small">Select a Project:</Box>
-									<Box pad="medium">
-										<Form>
-											<Select
-												id="projectOptions"
-												name="projectOptions"
-												placeholder="Select a Project"
-												value={value}
-												options={options}
-												onChange={({ option }) =>
-													this.setState({ projectName: option, value: option })}
+			<Box key={volunteer.id} direction="row" width="horizontal" basis="full">
+				<Box direction="column" width="90vw">
+					<Box direction="row" justify="between" width="horizontal" elevation="medium">
+						<Box alignSelf="start">
+							<Image width="200px" src={volunteer.image} />
+						</Box>
+						<Heading level={3} alignSelf="end">
+							{volunteer.name}
+						</Heading>
+						<Box id="icons" direction="row">
+							<Anchor href={`mailto:${volunteer.email}`} margin="small">
+								<MailOption />
+							</Anchor>
+							<Anchor onClick={this.onOpenProjectList} margin="small">
+								<AddCircle />
+							</Anchor>
+							{openProjectList && (
+								<Layer position="top-right">
+									<Box height="small" overflow="auto" elevation="medium">
+										<Box pad="small">Select a Project:</Box>
+										<Box pad="medium">
+											<Form>
+												<Select
+													id="projectOptions"
+													name="projectOptions"
+													placeholder="Select a Project"
+													value={value}
+													options={options}
+													onChange={({ option }) =>
+														this.setState({ projectName: option, value: option })}
+												/>
+												<Button
+													icon={<Checkmark />}
+													onClick={() => {}}
+													label="Add to Project"
+												/>
+											</Form>
+										</Box>
+										<Box align="center">
+											<Button icon={<Close />} onClick={this.onCloseProjectList} />
+										</Box>
+									</Box>
+								</Layer>
+							)}
+							<Anchor
+								onClick={() => {
+									this.props.history.push(`/volunteers/${volunteer.id}/edit`);
+								}}
+								margin="small"
+							>
+								<Edit />
+								{/*This only allows you to edit the volunteer's personal information */}
+							</Anchor>
+							<Anchor onClick={this.onOpenDelete} margin="small">
+								<Trash />
+							</Anchor>
+							{openDelete && (
+								<Layer position="top-left">
+									<Box height="small" overflow="auto" elevation="medium">
+										<Box pad="medium">
+											Are you sure you want to delete this volunteer? This is permanent and cannot
+											be undone!
+										</Box>
+										<Box pad="medium">
+											<Button
+												icon={<Trash />}
+												onClick={() => {
+													this.props.delete(volunteer.id);
+												}}
+												label="Yes, Delete Them"
 											/>
-											<Button icon={<Checkmark />} onClick={() => {}} label="Add to Project" />
-										</Form>
+											<Button
+												primary
+												icon={<Close />}
+												onClick={this.onCloseDelete}
+												label="No, Nevermind"
+											/>
+										</Box>
 									</Box>
-									<Box align="center">
-										<Button icon={<Close />} onClick={this.onCloseProjectList} />
-									</Box>
-								</Box>
-							</Layer>
-						)}
-						<Anchor
-							onClick={() => {
-								this.props.history.push(`/volunteers/${volunteer.id}/edit`);
-							}}
-							margin="small"
-						>
-							<Edit />
-							{/*This only allows you to edit the volunteer's personal information */}
-						</Anchor>
-						<Anchor onClick={this.onOpenDelete} margin="small">
-							<Trash />
-						</Anchor>
-						{openDelete && (
-							<Layer position="top-left">
-								<Box height="small" overflow="auto" elevation="medium">
-									<Box pad="medium">
-										Are you sure you want to delete this volunteer? This is permanent and cannot be undone!
-									</Box>
-									<Box pad="medium">
-										<Button
-											icon={<Trash />}
-											onClick={this.props.delete(volunteer.id)}
-											label="Yes, Delete Them"
-										/>
-										<Button
-											primary
-											icon={<Close />}
-											onClick={this.onCloseDelete}
-											label="No, Nevermind"
-										/>
-									</Box>
-								</Box>
-							</Layer>
-						)}
+								</Layer>
+							)}
+						</Box>
+					</Box>
+					<Box direction="row" elevation="medium" justify="evenly">
+						<Box elevation="small">
+							<Box>
+								<Heading level={5}>Contact Details</Heading>
+								<Text>{volunteer.phone}</Text>
+								<Text>{volunteer.email}</Text>
+								<Text>{volunteer.location}</Text>
+							</Box>
+							<Box>
+								<Heading level={5}>Skills</Heading>
+								{/* I'd like to add another modal that opens on edit of the skills*/}
+								{this.skillList(volunteer.id)}
+							</Box>
+							<Box elevation="small">
+								<Heading level={5}>Admin Notes:</Heading>
+								<Paragraph size="small" width="20vw">
+									{volunteer.notes}
+								</Paragraph>
+							</Box>
+						</Box>
+
+						<Box elevation="small">
+							<Box>
+								<Heading level={5}>Projects Assigned</Heading>
+								<Table>
+									<TableHeader>
+										<TableRow>
+											<TableCell>Project Name</TableCell>
+											<TableCell>Date Assigned</TableCell>
+											<TableCell>Hours</TableCell>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										<TableRow>
+											<TableCell>Project Name</TableCell>
+											<TableCell>Date</TableCell>
+											<TableCell>##</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
+							</Box>
+						</Box>
 					</Box>
 				</Box>
-				<Box direction="row" elevation="medium" justify="evenly">
-					<Box elevation="small">
-						<Box>
-							<Heading level={5}>Contact Details</Heading>
-							<Text>{volunteer.phone}</Text>
-							<Text>{volunteer.email}</Text>
-							<Text>{volunteer.location}</Text>
-						</Box>
-						<Box>
-							<Heading level={5}>Skills</Heading>
-							{/* I'd like to add another modal that opens on edit of the skills*/}
-							{this.skillList(volunteer.id)}
-						</Box>
-						<Box elevation="small">
-							<Heading level={5}>Admin Notes:</Heading>
-							<Paragraph size="small" width="20vw">
-								{volunteer.notes}
-							</Paragraph>
-						</Box>
-					</Box>
-
-					<Box elevation="small">
-						<Box>
-							<Heading level={5}>Projects Assigned</Heading>
-							<Table>
-								<TableHeader>
-									<TableRow>
-										<TableCell>Project Name</TableCell>
-										<TableCell>Date Assigned</TableCell>
-										<TableCell>Hours</TableCell>
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									<TableRow>
-										<TableCell>Project Name</TableCell>
-										<TableCell>Date</TableCell>
-										<TableCell>##</TableCell>
-									</TableRow>
-								</TableBody>
-							</Table>
-						</Box>
-					</Box>
+				<Box>
+					<Button
+						icon={<Close />}
+						onClick={() => {
+							this.props.history.push('/volunteers');
+						}}
+					/>
 				</Box>
 			</Box>
 		);
