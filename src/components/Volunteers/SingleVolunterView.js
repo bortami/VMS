@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import api from '../../modules/apiManager';
-import { Box, Image, Heading, Anchor, Layer, Button, Select, Form } from 'grommet';
+import {
+	Box,
+	Image,
+	Heading,
+	Anchor,
+	Layer,
+	Button,
+	Select,
+	Form,
+	Text,
+	Table,
+	TableRow,
+	TableCell,
+	TableHeader,
+	TableBody,
+	Paragraph
+} from 'grommet';
 import { MailOption, AddCircle, Trash, Close, Checkmark } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
@@ -10,6 +26,7 @@ export default class SingleVolunteerView extends Component {
 		value: '',
 		options: [],
 		projectName: '',
+		skills: []
 	};
 
 	onOpenDelete = () => this.setState({ openDelete: true });
@@ -17,11 +34,22 @@ export default class SingleVolunteerView extends Component {
 
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
+	skillList = (Id) => {
+		//Error. it works on one go around, then it hits it again and deletes what was placed there, actually it's running everytime I take an action on the page//
+		debugger;
+		const list = this.state.skills
+			.filter((skill) => Id === this.state.skills.volunteerId)
+			.map((skill) => <Text>{skill.skill.name}</Text>);
+		return list;
+	};
 
 	componentDidMount() {
-		const options = this.props.projects.map((project) => project.name)
-		this.setState({options: options})
-		//This doesn't work and I don't know why//
+		const newState = {};
+		const options = this.props.projects.map((project) => project.name); //This doesn't work and I don't know why//
+		api.getExpanded('volunteersSkills', 'skill').then((parsedSkills) => {
+			newState.skills = parsedSkills;
+			this.setState(newState);
+		});
 	}
 
 	render() {
@@ -29,8 +57,8 @@ export default class SingleVolunteerView extends Component {
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
-			<Box key={volunteer.id} direction="column" width="horizontal">
-				<Box direction="row" align="between" width="horizontal">
+			<Box key={volunteer.id} direction="column" width="horizontal" basis="full">
+				<Box direction="row" align="between" width="horizontal" elevation="medium">
 					<Box alignSelf="start">
 						<Image src={volunteer.image} />
 					</Box>
@@ -48,15 +76,16 @@ export default class SingleVolunteerView extends Component {
 									<Box pad="medium">Select a Project:</Box>
 									<Box pad="medium">
 										<Form>
-										<Select
-											id="projectOptions"
-											name="projectOptions"
-											placeholder="Select a Project"
-											value={value}
-											options={options}
-											onChange={({ option }) => this.setState({ projectName: option, value: option })}
-										/>
-										<Button icon={<Checkmark/>} onClick={()=>{}} label="Add to Project"/>
+											<Select
+												id="projectOptions"
+												name="projectOptions"
+												placeholder="Select a Project"
+												value={value}
+												options={options}
+												onChange={({ option }) =>
+													this.setState({ projectName: option, value: option })}
+											/>
+											<Button icon={<Checkmark />} onClick={() => {}} label="Add to Project" />
 										</Form>
 									</Box>
 									<Box align="center">
@@ -91,6 +120,46 @@ export default class SingleVolunteerView extends Component {
 								</Box>
 							</Layer>
 						)}
+					</Box>
+				</Box>
+				<Box direction="row" elevation="medium" justify="evenly">
+					<Box elevation="small">
+						<Box>
+							<Heading level={5}>Contact Details</Heading>
+							<Text>{volunteer.phone}</Text>
+							<Text>{volunteer.email}</Text>
+							<Text>{volunteer.location}</Text>
+						</Box>
+						<Box>
+							<Heading level={5}>Skills</Heading>
+							{this.skillList(volunteer.id)}
+						</Box>
+						<Box elevation="small">
+							<Heading level={5}>Admin Notes:</Heading>
+							<Paragraph>{volunteer.notes}</Paragraph>
+						</Box>
+					</Box>
+
+					<Box elevation="small">
+						<Box>
+							<Heading level={5}>Projects Assigned</Heading>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableCell>Project Name</TableCell>
+										<TableCell>Date Assigned</TableCell>
+										<TableCell>Hours</TableCell>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									<TableRow>
+										<TableCell>Project Name</TableCell>
+										<TableCell>Date</TableCell>
+										<TableCell>##</TableCell>
+									</TableRow>
+								</TableBody>
+							</Table>
+						</Box>
 					</Box>
 				</Box>
 			</Box>
