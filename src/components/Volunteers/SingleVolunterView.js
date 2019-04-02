@@ -8,7 +8,8 @@ export default class SingleVolunteerView extends Component {
 		openDelete: undefined,
 		openProjectList: undefined,
 		value: '',
-		options: []
+		options: [],
+		projectName: '',
 	};
 
 	onOpenDelete = () => this.setState({ openDelete: true });
@@ -16,17 +17,15 @@ export default class SingleVolunteerView extends Component {
 
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
-	
+
 	componentDidMount() {
-		const newState =[];
-		this.props.projects.forEach(project => newState.concat(project.name))
-		this.setState({options: newState})
+		const options = this.props.projects.map((project) => project.name)
+		this.setState({options: options})
+		//This doesn't work and I don't know why//
 	}
 
 	render() {
-
-		const { openDelete,openProjectList, value } = this.state;
-		const options = this.props.projects.map(project => project.name)
+		const { openDelete, openProjectList, value, options } = this.state;
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
@@ -48,13 +47,13 @@ export default class SingleVolunteerView extends Component {
 								<Box height="small" overflow="auto" elevation="medium">
 									<Box pad="medium">Select a Project:</Box>
 									<Box pad="medium">
-										<Select 
-										id="projectOptions"
-										name="projectOptions"
-										placeholder="Select a Project"
-										value={value}
-										options={options}
-										onChange={({ option }) => this.setState({ gender: option, value: option })}
+										<Select
+											id="projectOptions"
+											name="projectOptions"
+											placeholder="Select a Project"
+											value={value}
+											options={options}
+											onChange={({ option }) => this.setState({ projectName: option, value: option })}
 										/>
 									</Box>
 									<Box align="center">
