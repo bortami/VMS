@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
-import { Box, Button, Heading, Table, TableBody, TableCell, TableHeader, TableRow, TextInput, CheckBox } from 'grommet';
-import { Search } from 'grommet-icons';
+import { Box, Button, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
+import { Add, Search, Trash } from 'grommet-icons';
 import VolunteerListItem from './VolunteerListItem';
 
 export default class VolunteerList extends Component {
 	state = {
 		search: '',
-		volunteers: []
+		volunteers: [],
+		value: '',
+		options: []
 	};
 
 	totalHours = (volunteerId) => {
-		const hours = [].reduce((a, b) => a + b, 0);
-		if (this.props.hours.volunteerId === volunteerId) {
-			hours.push(this.props.hours.quanity);
-			return hours;
-		} else {
-			return 'N/A';
-		}
+		const hours = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return hours;
 	};
 
 	handleFieldChange = (e) => {
@@ -35,7 +35,7 @@ export default class VolunteerList extends Component {
 				flex
 				overflow={{ horizontal: 'hidden' }}
 			>
-      {/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
+				{/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
 				{/* <Box direction="column" pad="medium" width="50vw" align="center">
 					<Box fill="horizontal" direction="row">
 						<TextInput
@@ -69,7 +69,9 @@ export default class VolunteerList extends Component {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableCell scope="col" ><CheckBox></CheckBox></TableCell>
+								<TableCell scope="col">
+									<Button icon={<Add color="brand" />} onClick={() => {}} />
+								</TableCell>
 								<TableCell scope="col">Name</TableCell>
 								<TableCell scope="col">Date Joined</TableCell>
 								<TableCell scope="col">Hours Logged</TableCell>
@@ -82,14 +84,13 @@ export default class VolunteerList extends Component {
 										{...this.props}
 										volunteer={volunteer}
 										totalHours={this.totalHours}
+										hours={this.props.hours}
+										projects={this.props.projects}
 									/>
 								);
 							})}
 						</TableBody>
 					</Table>
-					<Box direction="row" pad="medium" align="center">
-						<Button label="Add to Project" />
-					</Box>
 				</Box>
 			</Box>
 		);
