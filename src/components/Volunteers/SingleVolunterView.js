@@ -36,6 +36,13 @@ export default class SingleVolunteerView extends Component {
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
 
+	totalHours = (volunteerId) => {
+		const total = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return total;
+	};
 	skillList = (volunteerId) => {
 		//Error. it works on one go around, then it hits it again and deletes what was placed there, actually it's running everytime I take an action on the page//
 		const list = this.state.skills
@@ -88,9 +95,13 @@ export default class SingleVolunteerView extends Component {
 						<Box alignSelf="start">
 							<Image width="200px" src={volunteer.image} />
 						</Box>
-						<Heading level={3} alignSelf="end">
-							{volunteer.name}
-						</Heading>
+						<Box direction="column" justify="end">
+							<Heading level={3} alignSelf="start">
+								{volunteer.name}
+							</Heading>
+							<Text size="medium">performed {this.totalHours(volunteer.id)} total hours of service</Text>
+						</Box>
+
 						<Box id="icons" direction="row">
 							<Anchor href={`mailto:${volunteer.email}`} margin="small">
 								<MailOption />
