@@ -57,7 +57,16 @@
       "name": "Animal Welfare"
     }
   ],
-  "hours": [],
+  "hours": [
+    {
+      "id": 1,
+      "quantity": 5,
+      "value": 33.5,
+      "projectId": 1,
+      "volunteerId": 1,
+      "skillId": 1
+    }
+  ],
   "projects": [
     {
       "id": 1,
@@ -77,6 +86,25 @@
       "minAge": 15,
       "maxAge": 100,
       "genderRestricted": "No"
+    },
+    {
+      "name": "Things Doing Thing",
+      "shortDescription": "dlfjdlkfjaiosjl",
+      "categoryId": "",
+      "street": "ljlkmj",
+      "city": "mkmlk",
+      "State": "klnl",
+      "zip": "66666",
+      "specialInstructions": "kndvlkdsn",
+      "restrictions": "klihjsdalhn",
+      "experience": "nope",
+      "maxVolunteers": "20",
+      "minAge": "15",
+      "maxAge": "35",
+      "genderRestricted": "",
+      "date": "2019-04-02T16:03:51.178Z",
+      "organizationId": 1,
+      "id": 2
     }
   ],
   "skills": [
@@ -85,8 +113,69 @@
       "name": "Planting"
     }
   ],
-  "volunteersProjects": [],
-  "volunteersSkills": [],
+  "volunteersProjects": [
+    {
+      "id": 1,
+      "volunteerId": 1,
+      "projectId": 1,
+      "date": "2019-04-02T16:03:51.178Z"
+    },
+    {
+      "id": 2,
+      "volunteerId": 2,
+      "projectId": 2,
+      "date": "2019-04-02T16:03:51.178Z"
+    },
+    {
+      "volunteerId": 1,
+      "projectId": 2,
+      "date": "2019-04-02T18:35:23.254Z",
+      "id": 3
+    },
+    {
+      "volunteerId": 2,
+      "projectId": 1,
+      "date": "2019-04-02T18:36:51.080Z",
+      "id": 4
+    },
+    {
+      "volunteerId": 3,
+      "projectId": 2,
+      "date": "2019-04-02T18:37:54.254Z",
+      "id": 5
+    },
+    {
+      "volunteerId": 3,
+      "projectId": 1,
+      "date": "2019-04-02T18:42:11.977Z",
+      "id": 6
+    },
+    {
+      "volunteerId": 2,
+      "projectId": 1,
+      "date": "2019-04-02T18:45:17.061Z",
+      "id": 7
+    },
+    {
+      "volunteerId": 2,
+      "projectId": 2,
+      "date": "2019-04-02T18:51:41.842Z",
+      "id": 8
+    },
+    {
+      "volunteerId": 1,
+      "projectId": 2,
+      "date": "2019-04-02T18:53:42.218Z",
+      "id": 9
+    }
+  ],
+  "volunteersSkills": [
+    {
+      "id": 1,
+      "skillId": 1,
+      "volunteerId": 1
+    }
+  ],
   "projectsSkills": [
     {
       "id": 1,

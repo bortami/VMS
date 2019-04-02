@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import api from '../../modules/apiManager';
+import Moment from 'react-moment';
 import {
 	Box,
 	Image,
@@ -17,7 +18,7 @@ import {
 	TableBody,
 	Paragraph
 } from 'grommet';
-import { MailOption, AddCircle, Trash, Close, Checkmark, Edit } from 'grommet-icons';
+import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, AidOption } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
 	state = {
@@ -25,7 +26,7 @@ export default class SingleVolunteerView extends Component {
 		openProjectList: undefined,
 		value: '',
 		options: [],
-		projectName: '',
+		projects: [],
 		skills: []
 	};
 
@@ -35,25 +36,81 @@ export default class SingleVolunteerView extends Component {
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
 
-	skillList = () => {
-		//Error. it works on one go around, then it hits it again and deletes what was placed there, actually it's running everytime I take an action on the page//
+	totalHours = (volunteerId) => {
+		const total = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return total;
+	};
+	skillList = (volunteerId) => {
 		const list = this.state.skills
-			.filter((skill) => skill.id === this.state.skills.volunteerId)
+			.filter((skill) => skill.volunteerId === volunteerId)
 			.map((skill) => <Text>{skill.skill.name}</Text>);
 		return list;
 	};
+	VolunteerHoursOnaProject = (volunteerId, projectId) => {
+		const hoursOnProject = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId && hours.projectId === projectId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return hoursOnProject;
+	};
+	volunteerProjectList = (volunteerId) => {
+		const volunteerProjectList = this.state.projects
+			.filter((project) => project.volunteerId === volunteerId)
+			.map((project) => (
+				<TableRow>
+					<TableCell>{project.project.name}</TableCell>
+					<TableCell>
+						<Moment format="MM/DD/YYYY">{project.date}</Moment>
+					</TableCell>
+					<TableCell>{this.VolunteerHoursOnaProject(project.volunteerId, project.projectId)}</TableCell>
+				</TableRow>
+			));
+		return volunteerProjectList;
+	};
+	findProjectId = (name) => {
+		const project = this.state.options.find((project) => project.name === name);
+		return project;
+	};
+
+	constructNewVolProj = (evt) => {
+		evt.preventDefault();
+		const volunteer = {
+			volunteerId: parseInt(this.props.match.params.volunteerId),
+			projectId: this.state.value,
+			date: new Date()
+		};
+
+		// Create the volunteer and redirect user to volunteer list
+		this.props.addToProject(volunteer).then(() => {
+			this.onCloseProjectList();
+			const newState = {};
+			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				this.setState(newState);
+			});
+		});
+	};
 
 	componentDidMount() {
-		const newState = {};
-		const options = this.props.projects.map((project) => project.name); //This doesn't work and I don't know why//
+		const newState = {
+			options: this.props.projects.map((project) => {
+				return { name: project.name, id: project.id };
+			})
+		}; //This only works when directing from the volunteer list. If I refresh the page, it doesn't. //
 		api.getExpanded('volunteersSkills', 'skill').then((parsedSkills) => {
 			newState.skills = parsedSkills;
-			this.setState(newState);
+			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				this.setState(newState);
+			});
 		});
 	}
 
 	render() {
-		const { openDelete, openProjectList, value, options } = this.state;
+		const { openDelete, openProjectList, value } = this.state;
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
@@ -63,9 +120,13 @@ export default class SingleVolunteerView extends Component {
 						<Box alignSelf="start">
 							<Image width="200px" src={volunteer.image} />
 						</Box>
-						<Heading level={3} alignSelf="end">
-							{volunteer.name}
-						</Heading>
+						<Box direction="column" justify="end">
+							<Heading level={3} alignSelf="start">
+								{volunteer.name}
+							</Heading>
+							<Text size="medium">performed {this.totalHours(volunteer.id)} total hours of service</Text>
+						</Box>
+
 						<Box id="icons" direction="row">
 							<Anchor href={`mailto:${volunteer.email}`} margin="small">
 								<MailOption />
@@ -84,13 +145,16 @@ export default class SingleVolunteerView extends Component {
 													name="projectOptions"
 													placeholder="Select a Project"
 													value={value}
-													options={options}
+													options={this.state.options.map((options) => options.name)}
 													onChange={({ option }) =>
-														this.setState({ projectName: option, value: option })}
+														this.setState({
+															projectName: option,
+															value: this.findProjectId(option).id
+														})}
 												/>
 												<Button
 													icon={<Checkmark />}
-													onClick={() => {}}
+													onClick={this.constructNewVolProj}
 													label="Add to Project"
 												/>
 											</Form>
@@ -117,8 +181,8 @@ export default class SingleVolunteerView extends Component {
 								<Layer position="top-left">
 									<Box height="small" overflow="auto" elevation="medium">
 										<Box pad="medium">
-											Are you sure you want to delete {volunteer.name.split(" ")[0]}? This is permanent and cannot
-											be undone!
+											Are you sure you want to delete {volunteer.name.split(' ')[0]}? This is
+											permanent and cannot be undone!
 										</Box>
 										<Box pad="medium">
 											<Button
@@ -141,7 +205,7 @@ export default class SingleVolunteerView extends Component {
 						</Box>
 					</Box>
 					<Box direction="row" elevation="medium" justify="evenly">
-						<Box elevation="small">
+						<Box elevation="small" width="25vw">
 							<Box>
 								<Heading level={5}>Contact Details</Heading>
 								<Text>{volunteer.phone}</Text>
@@ -161,24 +225,18 @@ export default class SingleVolunteerView extends Component {
 							</Box>
 						</Box>
 
-						<Box elevation="small">
+						<Box elevation="small" fill>
 							<Box>
 								<Heading level={5}>Projects Assigned</Heading>
 								<Table>
 									<TableHeader>
 										<TableRow>
-											<TableCell>Project Name</TableCell>
-											<TableCell>Date Assigned</TableCell>
-											<TableCell>Hours</TableCell>
+											<TableCell scope="col">Project Name</TableCell>
+											<TableCell scope="col">Date Assigned</TableCell>
+											<TableCell scope="col">Hours</TableCell>
 										</TableRow>
 									</TableHeader>
-									<TableBody>
-										<TableRow>
-											<TableCell>Project Name</TableCell>
-											<TableCell>Date</TableCell>
-											<TableCell>##</TableCell>
-										</TableRow>
-									</TableBody>
+									<TableBody>{this.volunteerProjectList(volunteer.id)}</TableBody>
 								</Table>
 							</Box>
 						</Box>

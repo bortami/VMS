@@ -40,6 +40,14 @@ export default class ApplicationViews extends Component {
 			});
 		});
 	};
+
+	addVolunteerToProject = (VolProjObject) => {
+		return api
+			.post(VolProjObject, 'volunteersProjects')
+			.then(() => api.all('volunteersProjects'))
+			.then((VolProjs) => this.setState({ volunteersProjects: VolProjs }));
+	};
+
 	addProject = (project) =>
 		api
 			.post(project, 'projects')
@@ -50,6 +58,8 @@ export default class ApplicationViews extends Component {
 		api.all(what).then((parsed) => {
 			this.setState({ what: parsed });
 		});
+	refreshExpanded = (table, expandedItem, stateLocation) =>
+		api.getExpanded(table, expandedItem).then((parsedItems) => this.setState(`{${stateLocation}: ${parsedItems}`));
 
 	componentDidMount() {
 		const newState = {};
@@ -134,6 +144,9 @@ export default class ApplicationViews extends Component {
 									route="volunteers"
 									volunteers={this.state.volunteers}
 									projects={this.state.projects}
+									hours={this.state.hours}
+									addToProject={this.addVolunteerToProject}
+									refresh={this.refreshExpanded}
 								/>
 							);
 						}}
