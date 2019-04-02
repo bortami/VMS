@@ -30,7 +30,7 @@ class App extends Component {
 						<Box fill>
 							<NavBar />
 							<ApplicationViews />
-							<Footer/>
+							{/* <Footer/> */}
 						</Box>
 					)}
 				</ResponsiveContext.Consumer>
