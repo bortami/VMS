@@ -134,6 +134,7 @@ export default class ApplicationViews extends Component {
 									route="volunteers"
 									volunteers={this.state.volunteers}
 									projects={this.state.projects}
+									hours={this.state.hours}
 								/>
 							);
 						}}
