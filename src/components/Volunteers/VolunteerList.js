@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Box, Button, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
+import { Anchor, Box, Button, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
 import { Add, Search, Trash } from 'grommet-icons';
-import VolunteerListItem from './VolunteerListItem';
+import Moment from 'react-moment';
+import api from '../../modules/apiManager';
 
 export default class VolunteerList extends Component {
 	state = {
@@ -10,6 +11,8 @@ export default class VolunteerList extends Component {
 		value: '',
 		options: []
 	};
+	onOpenProjectList = () => this.setState({ openProjectList: true });
+	onCloseProjectList = () => this.setState({ openProjectList: undefined });
 
 	totalHours = (volunteerId) => {
 		const hours = this.props.hours
@@ -23,6 +26,29 @@ export default class VolunteerList extends Component {
 		const stateToChange = {};
 		stateToChange[e.target.id] = e.target.value;
 		this.setState(stateToChange);
+	};
+	findProjectId = (name) => {
+		const project = this.state.options.find((project) => project.name === name);
+		return project;
+	};
+
+	constructNewVolProj = (evt) => {
+		evt.preventDefault();
+		const volunteer = {
+			volunteerId: parseInt(evt.target.id),
+			projectId: this.state.value,
+			date: new Date()
+		};
+
+		// Create the volunteer and redirect user to volunteer list
+		this.props.addToProject(volunteer).then(() => {
+			this.onCloseProjectList();
+			const newState = {};
+			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				this.setState(newState);
+			});
+		});
 	};
 	render() {
 		return (
@@ -59,6 +85,7 @@ export default class VolunteerList extends Component {
 					<Box direction="row" justify="between">
 						Volunteers
 						<Button
+							icon={<Add />}
 							label="Add Volunteer"
 							type="button"
 							onClick={() => {
@@ -80,13 +107,30 @@ export default class VolunteerList extends Component {
 						<TableBody>
 							{this.props.volunteers.map((volunteer) => {
 								return (
-									<VolunteerListItem
-										{...this.props}
-										volunteer={volunteer}
-										totalHours={this.totalHours}
-										hours={this.props.hours}
-										projects={this.props.projects}
-									/>
+									<TableRow>
+										<TableCell>
+											<Button
+												id={volunteer.id}
+												icon={<Add size="small" color="brand" />}
+												onClick={() => {}}
+											/>
+										</TableCell>
+										<TableCell>
+											<Anchor
+												id={volunteer.id}
+												onClick={() => {
+													this.props.history.push(`/volunteers/${volunteer.id}`);
+												}}
+											>
+												{volunteer.name}
+											</Anchor>
+										</TableCell>
+
+										<TableCell>
+											<Moment format="MM/DD/YYYY">{volunteer.dateJoined}</Moment>
+										</TableCell>
+										<TableCell>{this.totalHours(volunteer.id)}</TableCell>
+									</TableRow>
 								);
 							})}
 						</TableBody>

@@ -68,6 +68,13 @@ export default class ApplicationViews extends Component {
 			.reduce((a, b) => a + b, 0);
 		return hoursOnProject;
 	};
+	totalHoursByVolunteer = (volunteerId) => {
+		const hoursByVolunteer = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quanity)
+			.reduce((a, b) => a + b, 0);
+		return hoursByVolunteer;
+	};
 
 	componentDidMount() {
 		const newState = {};
@@ -135,7 +142,7 @@ export default class ApplicationViews extends Component {
 									{...props}
 									volunteers={this.state.volunteers}
 									hours={this.state.hours}
-									totalHours={this.state.VolunteerHoursOnaProject}
+									projects={this.state.projects}
 								/>
 							);
 						}}

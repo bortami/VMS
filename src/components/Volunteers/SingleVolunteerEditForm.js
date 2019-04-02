@@ -53,86 +53,90 @@ export default class SingleVolunteerEditForm extends Component {
 	render() {
 		const { options, value } = this.state;
 		return (
-			<Box direction="column">
-				<Heading level={2}>Edit Volunteer Information</Heading>
-				<Form>
-					<Paragraph>
-						Name:
-						<TextInput
-							name="name"
-							id="name"
-							label="Name"
-							value={this.state.name}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Email:
-						<TextInput
-							name="email"
-							id="email"
-							label="Email"
-							type="email"
-							value={this.state.email}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Phone Number:
-						<TextInput
-							name="phone"
-							id="phone"
-							label="Phone Number"
-							type="tel"
-							value={this.state.phone}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Link to Image:
-						<TextInput
-							name="image"
-							id="image"
-							label="Image Link"
-							type="url"
-							value={this.state.image}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Gender:
-						<Select
-							id="gender"
-							name="gender"
-							placeholder="Select Gender"
-							value={value}
-							options={options}
-							onChange={({ option }) => this.setState({ gender: option, value: option })}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Location:
-						<TextInput
-							name="location"
-							id="location"
-							label="Location"
-							value={this.state.location}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Additional Notes:
-						<TextArea
-							name="notes"
-							id="notes"
-							label="Notes"
-							value={this.state.notes}
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Button type="submit" primary label="Submit" onClick={this.updateVolunteer} />
-					<Button type="button" label="Cancel" icon={<Close />} onClick={() => this.props.history.goBack()} />
-				</Form>
+			<Box direction="row">
+				<Box direction="column">
+					<Heading level={2}>Edit Volunteer Information</Heading>
+					<Form>
+						<Paragraph>
+							Name:
+							<TextInput
+								name="name"
+								id="name"
+								label="Name"
+								value={this.state.name}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Email:
+							<TextInput
+								name="email"
+								id="email"
+								label="Email"
+								type="email"
+								value={this.state.email}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Phone Number:
+							<TextInput
+								name="phone"
+								id="phone"
+								label="Phone Number"
+								type="tel"
+								value={this.state.phone}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Link to Image:
+							<TextInput
+								name="image"
+								id="image"
+								label="Image Link"
+								type="url"
+								value={this.state.image}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Gender:
+							<Select
+								id="gender"
+								name="gender"
+								placeholder="Select Gender"
+								value={value}
+								options={options}
+								onChange={({ option }) => this.setState({ gender: option, value: option })}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Location:
+							<TextInput
+								name="location"
+								id="location"
+								label="Location"
+								value={this.state.location}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Additional Notes:
+							<TextArea
+								name="notes"
+								id="notes"
+								label="Notes"
+								value={this.state.notes}
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Button type="submit" primary label="Submit" onClick={this.updateVolunteer} />
+					</Form>
+				</Box>
+				<Box>
+					<Button icon={<Close />} onClick={() => this.props.history.goBack()} />
+				</Box>
 			</Box>
 		);
 	}
