@@ -44,7 +44,6 @@ export default class SingleVolunteerView extends Component {
 		return total;
 	};
 	skillList = (volunteerId) => {
-		//Error. it works on one go around, then it hits it again and deletes what was placed there, actually it's running everytime I take an action on the page//
 		const list = this.state.skills
 			.filter((skill) => skill.volunteerId === volunteerId)
 			.map((skill) => <Text>{skill.skill.name}</Text>);
@@ -64,17 +63,43 @@ export default class SingleVolunteerView extends Component {
 				<TableRow>
 					<TableCell>{project.project.name}</TableCell>
 					<TableCell>
-						<Moment format="MM/DD/YYYY">{project.project.date}</Moment>
+						<Moment format="MM/DD/YYYY">{project.date}</Moment>
 					</TableCell>
 					<TableCell>{this.VolunteerHoursOnaProject(project.volunteerId, project.projectId)}</TableCell>
 				</TableRow>
 			));
 		return volunteerProjectList;
 	};
+	findProjectId = (name) => {
+		const project = this.state.options.find((project) => project.name === name);
+		return project;
+	};
+
+	constructNewVolProj = (evt) => {
+		evt.preventDefault();
+		const volunteer = {
+			volunteerId: parseInt(this.props.match.params.volunteerId),
+			projectId: this.state.value,
+			date: new Date()
+		};
+
+		// Create the volunteer and redirect user to volunteer list
+		this.props.addToProject(volunteer).then(() => {
+			this.onCloseProjectList();
+			const newState = {};
+			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				this.setState(newState);
+			});
+		});
+	};
 
 	componentDidMount() {
-		const newState = {};
-		const options = this.props.projects.map((project) => project.name); //This doesn't work and I don't know why//
+		const newState = {
+			options: this.props.projects.map((project) => {
+				return { name: project.name, id: project.id };
+			})
+		}; //This only works when directing from the volunteer list. If I refresh the page, it doesn't. //
 		api.getExpanded('volunteersSkills', 'skill').then((parsedSkills) => {
 			newState.skills = parsedSkills;
 			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
@@ -85,7 +110,7 @@ export default class SingleVolunteerView extends Component {
 	}
 
 	render() {
-		const { openDelete, openProjectList, value, options } = this.state;
+		const { openDelete, openProjectList, value } = this.state;
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
@@ -120,13 +145,16 @@ export default class SingleVolunteerView extends Component {
 													name="projectOptions"
 													placeholder="Select a Project"
 													value={value}
-													options={options}
+													options={this.state.options.map((options) => options.name)}
 													onChange={({ option }) =>
-														this.setState({ projectName: option, value: option })}
+														this.setState({
+															projectName: option,
+															value: this.findProjectId(option).id
+														})}
 												/>
 												<Button
 													icon={<Checkmark />}
-													onClick={() => {}}
+													onClick={this.constructNewVolProj}
 													label="Add to Project"
 												/>
 											</Form>
