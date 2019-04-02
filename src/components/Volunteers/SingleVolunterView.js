@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../../modules/apiManager';
-import { Box, Image, Heading, Anchor, Layer, Button, Select } from 'grommet';
-import { MailOption, AddCircle, Trash, Close } from 'grommet-icons';
+import { Box, Image, Heading, Anchor, Layer, Button, Select, Form } from 'grommet';
+import { MailOption, AddCircle, Trash, Close, Checkmark } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
 	state = {
@@ -47,6 +47,7 @@ export default class SingleVolunteerView extends Component {
 								<Box height="small" overflow="auto" elevation="medium">
 									<Box pad="medium">Select a Project:</Box>
 									<Box pad="medium">
+										<Form>
 										<Select
 											id="projectOptions"
 											name="projectOptions"
@@ -55,6 +56,8 @@ export default class SingleVolunteerView extends Component {
 											options={options}
 											onChange={({ option }) => this.setState({ projectName: option, value: option })}
 										/>
+										<Button icon={<Checkmark/>} onClick={()=>{}} label="Add to Project"/>
+										</Form>
 									</Box>
 									<Box align="center">
 										<Button icon={<Close />} onClick={this.onCloseProjectList} />
