@@ -117,7 +117,7 @@ export default class SingleVolunteerView extends Component {
 								<Layer position="top-left">
 									<Box height="small" overflow="auto" elevation="medium">
 										<Box pad="medium">
-											Are you sure you want to delete this volunteer? This is permanent and cannot
+											Are you sure you want to delete {volunteer.name.split(" ")[0]}? This is permanent and cannot
 											be undone!
 										</Box>
 										<Box pad="medium">
