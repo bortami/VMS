@@ -27,15 +27,18 @@ const api = {
 	singleByAttribute(branch, attribute, variable) {
 		return fetch(`${remoteURL}/${branch}?${attribute}=${variable}`).then((r) => r.json());
 	},
+	getExpanded(branch, variable) {
+		return fetch(`${remoteURL}/${branch}?_expand=${variable}`).then((r) => r.json());
+	},
 	put(branch, editedObject) {
-    return fetch(`${remoteURL}/${branch}/${editedObject.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(editedObject)
-    }).then(data => data.json());
-  }
+		return fetch(`${remoteURL}/${branch}/${editedObject.id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(editedObject)
+		}).then((data) => data.json());
+	}
 };
 
 export default api;
