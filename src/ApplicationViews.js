@@ -155,11 +155,7 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/"
 						render={(props) => {
-							if (this.props.isAuthenticated()) {
-								return <LandingPage {...props} projects={this.state.projects} />;
-							} else {
-								return <Redirect to="/login" />;
-							}
+							return <LandingPage {...props} projects={this.state.projects} />;
 						}}
 					/>
 					<Route
