@@ -79,16 +79,16 @@ export default class SingleProjectView extends Component {
 		evt.preventDefault();
 		const volunteer = {
 			volunteerId: this.state.value,
-			projectId: parseInt(this.props.match.params.volunteerId),
+			projectId: parseInt(this.props.match.params.projectId),
 			date: new Date()
 		};
 
 		// Create the volunteer and redirect user to volunteer list
 		this.props.addToProject(volunteer).then(() => {
-			this.onCloseProjectList();
+			this.onCloseVolunteerList();
 			const newState = {};
-			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
-				newState.projects = parsedProjects;
+			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
+				newState.volunteers = parsedVolunteers;
 				this.setState(newState);
 			});
 		});
