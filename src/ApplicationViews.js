@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { Box } from 'grommet';
 import LandingPage from './components/landingPage/landingPage';
 import VolunteerList from './components/Volunteers/VolunteerList';
@@ -162,111 +162,135 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/volunteers"
 						render={(props) => {
-							return (
-								<VolunteerList
-									{...props}
-									volunteers={this.state.volunteers}
-									hours={this.state.hours}
-									projects={this.state.projects}
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<VolunteerList
+										{...props}
+										volunteers={this.state.volunteers}
+										hours={this.state.hours}
+										projects={this.state.projects}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/volunteers/add"
 						render={(props) => {
-							return <AddVolunteer {...props} addVolunteer={this.addVolunteer} />;
+							if (this.props.isAuthenticated()) {
+								return <AddVolunteer {...props} addVolunteer={this.addVolunteer} />;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						exact
 						path="/volunteers/:volunteerId(\d+)"
 						render={(props) => {
-							return (
-								<SingleVolunteerView
-									{...props}
-									delete={this.deleteVolunteer}
-									route="volunteers"
-									volunteers={this.state.volunteers}
-									projects={this.state.projects}
-									hours={this.state.hours}
-									addToProject={this.addVolunteerToProject}
-									refresh={this.refreshExpanded}
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<SingleVolunteerView
+										{...props}
+										delete={this.deleteVolunteer}
+										route="volunteers"
+										volunteers={this.state.volunteers}
+										projects={this.state.projects}
+										hours={this.state.hours}
+										addToProject={this.addVolunteerToProject}
+										refresh={this.refreshExpanded}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/volunteers/:volunteerId(\d+)/edit"
 						render={(props) => {
-							return (
-								<SingleVolunteerEditForm
-									{...props}
-									volunteers={this.state.volunteers}
-									projects={this.state.projects}
-									skills={this.state.skills}
-									updateVolunteer={this.updateVolunteer}
-									route="volunteers"
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<SingleVolunteerEditForm
+										{...props}
+										volunteers={this.state.volunteers}
+										projects={this.state.projects}
+										skills={this.state.skills}
+										updateVolunteer={this.updateVolunteer}
+										route="volunteers"
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						exact
 						path="/projects"
 						render={(props) => {
-							return (
-								<ProjectList
-									{...props}
-									projects={this.state.projects}
-									hours={this.state.hours}
-									volunteers={this.state.volunteersProjects}
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<ProjectList
+										{...props}
+										projects={this.state.projects}
+										hours={this.state.hours}
+										volunteers={this.state.volunteersProjects}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						exact
 						path="/projects/:projectId(\d+)"
 						render={(props) => {
-							return (
-								<SingleProjectView
-									{...props}
-									delete={this.deleteProject}
-									volunteers={this.state.volunteers}
-									projects={this.state.projects}
-									hours={this.state.hours}
-									addToProject={this.addVolunteerToProject}
-									refresh={this.refreshExpanded}
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<SingleProjectView
+										{...props}
+										delete={this.deleteProject}
+										volunteers={this.state.volunteers}
+										projects={this.state.projects}
+										hours={this.state.hours}
+										addToProject={this.addVolunteerToProject}
+										refresh={this.refreshExpanded}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/projects/add"
 						render={(props) => {
-							return <AddProject {...props} addProject={this.addProject} />;
+							if (this.props.isAuthenticated()) {
+								return <AddProject {...props} addProject={this.addProject} />;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/projects/:projectId(\d+)/edit"
 						render={(props) => {
-							return (
-								<EditSingleProject
-									{...props}
-									projects={this.state.projects}
-									skills={this.state.skills}
-									updateProject={this.updateProject}
-								/>
-							);
-						}}
-					/>
-
-					<Route
-						exact
-						path="/reports"
-						render={(props) => {
-							return null;
+							if (this.props.isAuthenticated()) {
+								return (
+									<EditSingleProject
+										{...props}
+										projects={this.state.projects}
+										skills={this.state.skills}
+										updateProject={this.updateProject}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 
@@ -274,35 +298,21 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/profile"
 						render={(props) => {
-							return null;
+							if (this.props.isAuthenticated()) {
+								return null;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/profile/edit"
 						render={(props) => {
-							return null;
-						}}
-					/>
-
-					<Route
-						exact
-						path="/help"
-						render={(props) => {
-							return null;
-						}}
-					/>
-					<Route
-						path="/help/faq"
-						render={(props) => {
-							return null;
-						}}
-					/>
-
-					<Route
-						exact
-						path="/results"
-						render={(props) => {
-							return null;
+							if (this.props.isAuthenticated()) {
+								return null;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 				</Box>
