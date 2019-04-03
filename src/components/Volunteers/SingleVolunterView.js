@@ -174,8 +174,29 @@ export default class SingleVolunteerView extends Component {
 								<Edit />
 								{/*This only allows you to edit the volunteer's personal information */}
 							</Anchor>
+						</Box>
+					</Box>
+					<Box direction="row" elevation="medium" justify="evenly">
+						<Box elevation="small" width="25vw">
+							<Box>
+								<Heading level={5}>Contact Details</Heading>
+								<Text>{volunteer.phone}</Text>
+								<Text>{volunteer.email}</Text>
+								<Text>{volunteer.location}</Text>
+							</Box>
+							<Box>
+								<Heading level={5}>Skills</Heading>
+								{/* I'd like to add another modal that opens on edit of the skills*/}
+								{this.skillList(volunteer.id)}
+							</Box>
+							<Box elevation="small">
+								<Heading level={5}>Admin Notes:</Heading>
+								<Paragraph size="small" width="20vw">
+									{volunteer.notes}
+								</Paragraph>
+							</Box>
 							<Anchor onClick={this.onOpenDelete} margin="small">
-								<Trash />
+								<Trash /> Delete Volunteer
 							</Anchor>
 							{openDelete && (
 								<Layer position="top-left">
@@ -202,27 +223,6 @@ export default class SingleVolunteerView extends Component {
 									</Box>
 								</Layer>
 							)}
-						</Box>
-					</Box>
-					<Box direction="row" elevation="medium" justify="evenly">
-						<Box elevation="small" width="25vw">
-							<Box>
-								<Heading level={5}>Contact Details</Heading>
-								<Text>{volunteer.phone}</Text>
-								<Text>{volunteer.email}</Text>
-								<Text>{volunteer.location}</Text>
-							</Box>
-							<Box>
-								<Heading level={5}>Skills</Heading>
-								{/* I'd like to add another modal that opens on edit of the skills*/}
-								{this.skillList(volunteer.id)}
-							</Box>
-							<Box elevation="small">
-								<Heading level={5}>Admin Notes:</Heading>
-								<Paragraph size="small" width="20vw">
-									{volunteer.notes}
-								</Paragraph>
-							</Box>
 						</Box>
 
 						<Box elevation="small" fill>

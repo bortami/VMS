@@ -64,7 +64,8 @@
       "value": 33.5,
       "projectId": 1,
       "volunteerId": 1,
-      "skillId": 1
+      "skillId": 1,
+      "notes":""
     }
   ],
   "projects": [
@@ -167,6 +168,12 @@
       "projectId": 2,
       "date": "2019-04-02T18:53:42.218Z",
       "id": 9
+    },
+    {
+      "volunteerId": 1,
+      "projectId": 2,
+      "date": "2019-04-03T00:47:16.825Z",
+      "id": 10
     }
   ],
   "volunteersSkills": [
