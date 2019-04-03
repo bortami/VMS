@@ -26,7 +26,6 @@ export default class ApplicationViews extends Component {
 		volunteersSkills: [],
 		hours: []
 	};
-	isAuthenticated = () => sessionStorage.getItem('userId') !== null || localStorage.getItem('userId') !== null;
 
 	getSingleUserbyUsername = (variable) => api.singleByAttribute('organizations', 'username', variable);
 

@@ -35,6 +35,7 @@ export default class Register extends Component {
 			} else {
 				this.props.addUser(newUser).then((user) => {
 					sessionStorage.setItem('userId', user.id);
+					this.setState({ login: true });
 					this.props.history.push('/');
 					this.props.refresh('organizations');
 				});

@@ -38,6 +38,7 @@ export default class Login extends Component {
 					this.state.checked
 						? localStorage.setItem('userId', user[0].id)
 						: sessionStorage.setItem('userId', user[0].id);
+					this.setState({ login: true });
 					this.props.history.push('/');
 				} else {
 					window.alert('You have entered incorrect credentials.');
