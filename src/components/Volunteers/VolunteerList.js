@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Anchor, Box, Button, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
-import { Add, Search, Trash } from 'grommet-icons';
+import { Anchor, Box, Button, Form, Layer, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
+import { Add, Close, Checkmark, Search, Trash } from 'grommet-icons';
 import Moment from 'react-moment';
 import api from '../../modules/apiManager';
 
@@ -9,7 +9,8 @@ export default class VolunteerList extends Component {
 		search: '',
 		volunteers: [],
 		value: '',
-		options: []
+		options: [],
+		openProjectList: undefined
 	};
 	onOpenProjectList = () => this.setState({ openProjectList: true });
 	onCloseProjectList = () => this.setState({ openProjectList: undefined });
@@ -50,7 +51,16 @@ export default class VolunteerList extends Component {
 			});
 		});
 	};
+	componentDidMount() {
+		const newState = {
+			options: this.props.projects.map((project) => {
+				return { name: project.name, id: project.id };
+			})
+		};
+		this.setState(newState);
+	}
 	render() {
+		const { openProjectList, value } = this.state;
 		return (
 			<Box
 				direction="column"
@@ -112,8 +122,46 @@ export default class VolunteerList extends Component {
 											<Button
 												id={volunteer.id}
 												icon={<Add size="small" color="brand" />}
-												onClick={() => {}}
+												onClick={() => {
+													this.onOpenProjectList();
+												}}
 											/>
+											{openProjectList && (
+												<Layer position="top-right">
+													<Box height="small" overflow="auto" elevation="medium">
+														<Box pad="small">Select a Project:</Box>
+														<Box pad="medium">
+															<Form>
+																<Select
+																	id="projectOptions"
+																	name="projectOptions"
+																	placeholder="Select a Project"
+																	value={value}
+																	options={this.state.options.map(
+																		(options) => options.name
+																	)}
+																	onChange={({ option }) =>
+																		this.setState({
+																			projectName: option,
+																			value: this.findProjectId(option).id
+																		})}
+																/>
+																<Button
+																	icon={<Checkmark />}
+																	onClick={this.constructNewVolProj}
+																	label="Add to Project"
+																/>
+															</Form>
+														</Box>
+														<Box align="center">
+															<Button
+																icon={<Close />}
+																onClick={this.onCloseProjectList}
+															/>
+														</Box>
+													</Box>
+												</Layer>
+											)}
 										</TableCell>
 										<TableCell>
 											<Anchor
