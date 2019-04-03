@@ -47,16 +47,6 @@
       "image": "https://"
     }
   ],
-  "categories": [
-    {
-      "id": 1,
-      "name": "Environment"
-    },
-    {
-      "id": 2,
-      "name": "Animal Welfare"
-    }
-  ],
   "hours": [
     {
       "id": 1,
@@ -65,7 +55,7 @@
       "projectId": 1,
       "volunteerId": 1,
       "skillId": 1,
-      "notes":""
+      "notes": ""
     }
   ],
   "projects": [
@@ -91,7 +81,6 @@
     {
       "name": "Things Doing Thing",
       "shortDescription": "dlfjdlkfjaiosjl",
-      "categoryId": "",
       "street": "ljlkmj",
       "city": "mkmlk",
       "State": "klnl",
@@ -102,7 +91,6 @@
       "maxVolunteers": "20",
       "minAge": "15",
       "maxAge": "35",
-      "genderRestricted": "",
       "date": "2019-04-02T16:03:51.178Z",
       "organizationId": 1,
       "id": 2
@@ -154,26 +142,20 @@
     {
       "volunteerId": 2,
       "projectId": 1,
-      "date": "2019-04-02T18:45:17.061Z",
+      "date": "2019-04-03T15:18:06.121Z",
       "id": 7
     },
     {
-      "volunteerId": 2,
+      "volunteerId": 3,
       "projectId": 2,
-      "date": "2019-04-02T18:51:41.842Z",
+      "date": "2019-04-03T15:18:37.784Z",
       "id": 8
     },
     {
       "volunteerId": 1,
       "projectId": 2,
-      "date": "2019-04-02T18:53:42.218Z",
+      "date": "2019-04-03T15:20:33.217Z",
       "id": 9
-    },
-    {
-      "volunteerId": 1,
-      "projectId": 2,
-      "date": "2019-04-03T00:47:16.825Z",
-      "id": 10
     }
   ],
   "volunteersSkills": [
