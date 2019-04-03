@@ -22,14 +22,23 @@ const theme = {
 };
 
 class App extends Component {
+	state = {
+		login: false
+	};
+	isAuthenticated = () => sessionStorage.getItem('userId') !== null || localStorage.getItem('userId') !== null;
+	logout = () => {
+		sessionStorage.clear();
+		localStorage.clear();
+		this.setState({ login: false });
+	};
 	render() {
 		return (
 			<Grommet theme={theme} full>
 				<ResponsiveContext.Consumer>
 					{(size) => (
 						<Box fill>
-							<NavBar />
-							<ApplicationViews />
+							<NavBar isAuthenticated={this.isAuthenticated} logout={this.logout} />
+							<ApplicationViews isAuthenticated={this.isAuthenticated} />
 							{/* <Footer/> */}
 						</Box>
 					)}
