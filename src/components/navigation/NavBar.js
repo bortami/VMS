@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Anchor, Box, Menu, Button } from 'grommet';
-import { Group, Organization, PowerShutdown, User } from 'grommet-icons';
+import { Organization, PowerShutdown, UserSettings } from 'grommet-icons';
 
 const AppBar = (props) => (
 	<Box
@@ -47,7 +47,7 @@ export default class NavBar extends Component {
 						<Menu
 							label="Account"
 							items={[
-								{ icon: <Organization />, label: 'Your Profile', href: '/profile' },
+								{ icon: <UserSettings />, label: 'Settings', href: '/settings' },
 								{
 									icon: <PowerShutdown />,
 									label: 'Logout',

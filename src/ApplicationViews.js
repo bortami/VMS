@@ -13,6 +13,7 @@ import SingleProjectView from './components/projects/SingleProjectView';
 import EditSingleProject from './components/projects/EditSingleProject';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
+import UserSettings from './components/Users/userSetting';
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -103,22 +104,20 @@ export default class ApplicationViews extends Component {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
 			newState.volunteers = parsedVolunteers;
-			api.all('organizations').then((parsedOrganizations) => {
-				newState.organizations = parsedOrganizations;
-				api.all('projects').then((parsedProjects) => {
-					newState.projects = parsedProjects;
-					api.all('skills').then((parsedSkills) => {
-						newState.skills = parsedSkills;
-						api.all('projectsSkills').then((parsedPS) => {
-							newState.projectSkills = parsedPS;
-							api.all('volunteersProjects').then((parsedvolunteersProjects) => {
-								newState.volunteersProjects = parsedvolunteersProjects;
-								api.all('volunteersSkills').then((parsedvolunteersSkills) => {
-									newState.volunteersSkills = parsedvolunteersSkills;
-									api.all('hours').then((parsedHours) => {
-										newState.hours = parsedHours;
-										this.setState(newState);
-									});
+
+			api.all('projects').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				api.all('skills').then((parsedSkills) => {
+					newState.skills = parsedSkills;
+					api.all('projectsSkills').then((parsedPS) => {
+						newState.projectSkills = parsedPS;
+						api.all('volunteersProjects').then((parsedvolunteersProjects) => {
+							newState.volunteersProjects = parsedvolunteersProjects;
+							api.all('volunteersSkills').then((parsedvolunteersSkills) => {
+								newState.volunteersSkills = parsedvolunteersSkills;
+								api.all('hours').then((parsedHours) => {
+									newState.hours = parsedHours;
+									this.setState(newState);
 								});
 							});
 						});
@@ -296,10 +295,10 @@ export default class ApplicationViews extends Component {
 
 					<Route
 						exact
-						path="/profile"
+						path="/settings"
 						render={(props) => {
 							if (this.props.isAuthenticated()) {
-								return null;
+								return <UserSettings {...props} skills={this.state.skills} />;
 							} else {
 								return <Redirect to="/login" />;
 							}
