@@ -3,7 +3,6 @@ import api from '../../modules/apiManager';
 import Moment from 'react-moment';
 import {
 	Box,
-	Image,
 	Heading,
 	Anchor,
 	Layer,
@@ -18,7 +17,7 @@ import {
 	TableBody,
 	Paragraph
 } from 'grommet';
-import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, Add } from 'grommet-icons';
+import { AddCircle, Trash, Close, Checkmark, Edit, SubtractCircle } from 'grommet-icons';
 
 export default class SingleProjectView extends Component {
 	state = {
@@ -56,6 +55,15 @@ export default class SingleProjectView extends Component {
 			.reduce((a, b) => a + b, 0);
 		return hoursOnProject;
 	};
+	removeVolunteerFromProject = (relationshipId) => {
+		return fetch(`http://localhost:5002/volunteersProjects/${relationshipId}`, { method: 'DELETE' })
+			.then((r) => r.json())
+			.then(() => {
+				return api.getExpanded('volunteersProjects', 'volunteer').then((projects) => {
+					this.setState({ volunteers: projects });
+				});
+			});
+	};
 	ProjectVolunteerList = (projectId) => {
 		const projectVolunteerList = this.state.volunteers
 			.filter((volunteer) => volunteer.projectId === projectId)
@@ -66,6 +74,13 @@ export default class SingleProjectView extends Component {
 						<Moment format="MM/DD/YYYY">{volunteer.date}</Moment>
 					</TableCell>
 					<TableCell>{this.VolunteerHoursOnaProject(volunteer.volunteerId, volunteer.projectId)}</TableCell>
+					<TableCell>
+						<Button
+							plain
+							onClick={() => this.removeVolunteerFromProject(volunteer.id)}
+							icon={<SubtractCircle />}
+						/>
+					</TableCell>
 				</TableRow>
 			));
 		return projectVolunteerList;
@@ -83,11 +98,11 @@ export default class SingleProjectView extends Component {
 			date: new Date()
 		};
 
-		// Create the volunteer to Project relationship 
+		// Create the volunteer to Project relationship
 		this.props.addToProject(volunteer).then(() => {
 			this.onCloseVolunteerList();
 			const newState = {};
-            // and displays an updated volunteer list
+			// and displays an updated volunteer list
 			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
 				newState.volunteers = parsedVolunteers;
 				this.setState(newState);
@@ -219,7 +234,7 @@ export default class SingleProjectView extends Component {
 													icon={<Trash />}
 													onClick={() => {
 														this.props.delete(project.id);
-														this.props.history.push("/projects")
+														this.props.history.push('/projects');
 													}}
 													label="Yes, Delete It!"
 												/>
@@ -245,6 +260,7 @@ export default class SingleProjectView extends Component {
 											<TableCell scope="col">Volunteer Name</TableCell>
 											<TableCell scope="col">Date Assigned</TableCell>
 											<TableCell scope="col">Hours</TableCell>
+											<TableCell cope="col">Remove</TableCell>
 										</TableRow>
 									</TableHeader>
 									<TableBody>{this.ProjectVolunteerList(project.id)}</TableBody>

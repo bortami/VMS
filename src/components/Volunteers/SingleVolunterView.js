@@ -18,7 +18,7 @@ import {
 	TableBody,
 	Paragraph
 } from 'grommet';
-import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, Add } from 'grommet-icons';
+import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, SubtractCircle } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
 	state = {
@@ -60,12 +60,19 @@ export default class SingleVolunteerView extends Component {
 		const volunteerProjectList = this.state.projects
 			.filter((project) => project.volunteerId === volunteerId)
 			.map((project) => (
-				<TableRow>
+				<TableRow key={project.id}>
 					<TableCell>{project.project.name}</TableCell>
 					<TableCell>
 						<Moment format="MM/DD/YYYY">{project.date}</Moment>
 					</TableCell>
 					<TableCell>{this.VolunteerHoursOnaProject(project.volunteerId, project.projectId)}</TableCell>
+					<TableCell>
+						<Button
+							plain
+							icon={<SubtractCircle />}
+							onClick={() => this.removeVolunteerFromProject(project.id)}
+						/>
+					</TableCell>
 				</TableRow>
 			));
 		return volunteerProjectList;
@@ -93,7 +100,15 @@ export default class SingleVolunteerView extends Component {
 			});
 		});
 	};
-
+	removeVolunteerFromProject = (relationshipId) => {
+		return fetch(`http://localhost:5002/volunteersProjects/${relationshipId}`, { method: 'DELETE' })
+			.then((r) => r.json())
+			.then(() => {
+				return api.getExpanded('volunteersProjects', 'project').then((projects) => {
+					this.setState({ projects: projects });
+				});
+			});
+	};
 	componentDidMount() {
 		const newState = {
 			options: this.props.projects.map((project) => {
@@ -235,6 +250,7 @@ export default class SingleVolunteerView extends Component {
 											<TableCell scope="col">Project Name</TableCell>
 											<TableCell scope="col">Date Assigned</TableCell>
 											<TableCell scope="col">Hours</TableCell>
+											<TableCell cope="col">Remove</TableCell>
 										</TableRow>
 									</TableHeader>
 									<TableBody>{this.volunteerProjectList(volunteer.id)}</TableBody>

@@ -96,20 +96,17 @@ export default class ApplicationViews extends Component {
 				newState.organizations = parsedOrganizations;
 				api.all('projects').then((parsedProjects) => {
 					newState.projects = parsedProjects;
-					api.all('categories').then((parsedCategories) => {
-						newState.categories = parsedCategories;
-						api.all('skills').then((parsedSkills) => {
-							newState.skills = parsedSkills;
-							api.all('projectsSkills').then((parsedPS) => {
-								newState.projectSkills = parsedPS;
-								api.all('volunteersProjects').then((parsedvolunteersProjects) => {
-									newState.volunteersProjects = parsedvolunteersProjects;
-									api.all('volunteersSkills').then((parsedvolunteersSkills) => {
-										newState.volunteersSkills = parsedvolunteersSkills;
-										api.all('hours').then((parsedHours) => {
-											newState.hours = parsedHours;
-											this.setState(newState);
-										});
+					api.all('skills').then((parsedSkills) => {
+						newState.skills = parsedSkills;
+						api.all('projectsSkills').then((parsedPS) => {
+							newState.projectSkills = parsedPS;
+							api.all('volunteersProjects').then((parsedvolunteersProjects) => {
+								newState.volunteersProjects = parsedvolunteersProjects;
+								api.all('volunteersSkills').then((parsedvolunteersSkills) => {
+									newState.volunteersSkills = parsedvolunteersSkills;
+									api.all('hours').then((parsedHours) => {
+										newState.hours = parsedHours;
+										this.setState(newState);
 									});
 								});
 							});
