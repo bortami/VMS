@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { Box } from 'grommet';
 import LandingPage from './components/landingPage/landingPage';
 import VolunteerList from './components/Volunteers/VolunteerList';
@@ -155,27 +155,39 @@ export default class ApplicationViews extends Component {
 						exact
 						path="/"
 						render={(props) => {
-							return <LandingPage {...props} projects={this.state.projects} />;
+							if (this.props.isAuthenticated()) {
+								return <LandingPage {...props} projects={this.state.projects} />;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						exact
 						path="/volunteers"
 						render={(props) => {
-							return (
-								<VolunteerList
-									{...props}
-									volunteers={this.state.volunteers}
-									hours={this.state.hours}
-									projects={this.state.projects}
-								/>
-							);
+							if (this.props.isAuthenticated()) {
+								return (
+									<VolunteerList
+										{...props}
+										volunteers={this.state.volunteers}
+										hours={this.state.hours}
+										projects={this.state.projects}
+									/>
+								);
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
 						path="/volunteers/add"
 						render={(props) => {
-							return <AddVolunteer {...props} addVolunteer={this.addVolunteer} />;
+							if (this.props.isAuthenticated()) {
+								return <AddVolunteer {...props} addVolunteer={this.addVolunteer} />;
+							} else {
+								return <Redirect to="/login" />;
+							}
 						}}
 					/>
 					<Route
