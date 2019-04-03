@@ -11,6 +11,8 @@ import ProjectList from './components/projects/ProjectsList';
 import AddProject from './components/projects/AddProject';
 import SingleProjectView from './components/projects/SingleProjectView';
 import EditSingleProject from './components/projects/EditSingleProject';
+import Login from './components/authentication/Login';
+import Register from './components/authentication/Register';
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -23,6 +25,16 @@ export default class ApplicationViews extends Component {
 		volunteersProjects: [],
 		volunteersSkills: [],
 		hours: []
+	};
+	isAuthenticated = () => sessionStorage.getItem('userId') !== null || localStorage.getItem('userId') !== null;
+
+	getSingleUserbyUsername = (variable) => api.singleByAttribute('organizations', 'username', variable);
+
+	addOrganization = (organization) => {
+		api
+			.post(organization, 'organizations')
+			.then(() => api.all('organizations'))
+			.then((organizations) => this.setState({ organizations: organizations }));
 	};
 
 	addVolunteer = (volunteer) =>
@@ -122,17 +134,22 @@ export default class ApplicationViews extends Component {
 			<Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
 				<Box flex align="center" justify="center">
 					<Route
-						exact
 						path="/login"
 						render={(props) => {
-							return null;
+							return <Login {...props} getUser={this.getSingleUserbyUsername} />;
 						}}
 					/>
 					<Route
-						exact
 						path="/register"
 						render={(props) => {
-							return null;
+							return (
+								<Register
+									{...props}
+									addUser={this.addOrganization}
+									getUser={this.getSingleUserbyUsername}
+									refreshEmployees={this.refresh}
+								/>
+							);
 						}}
 					/>
 					<Route
