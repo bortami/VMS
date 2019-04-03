@@ -83,10 +83,11 @@ export default class SingleProjectView extends Component {
 			date: new Date()
 		};
 
-		// Create the volunteer and redirect user to volunteer list
+		// Create the volunteer to Project relationship 
 		this.props.addToProject(volunteer).then(() => {
 			this.onCloseVolunteerList();
 			const newState = {};
+            // and displays an updated volunteer list
 			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
 				newState.volunteers = parsedVolunteers;
 				this.setState(newState);
