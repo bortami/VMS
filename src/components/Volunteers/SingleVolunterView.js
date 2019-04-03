@@ -18,7 +18,7 @@ import {
 	TableBody,
 	Paragraph
 } from 'grommet';
-import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, AidOption } from 'grommet-icons';
+import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, Add } from 'grommet-icons';
 
 export default class SingleVolunteerView extends Component {
 	state = {
@@ -223,6 +223,36 @@ export default class SingleVolunteerView extends Component {
 									</Box>
 								</Layer>
 							)}
+						</Box>
+					</Box>
+					<Box direction="row" elevation="medium" justify="evenly">
+						<Box elevation="small" width="25vw">
+							<Box>
+								<Heading level={5}>Contact Details</Heading>
+								<Text>{volunteer.phone}</Text>
+								<Text>{volunteer.email}</Text>
+								<Text>{volunteer.location}</Text>
+							</Box>
+							<Box>
+								<Box direction="row" justify="start">
+									<Heading level={5}>Skills</Heading>
+									<Button icon={<Add size="small" color="brand" />} onClick={() => {}} />
+									<Button icon={<Edit size="small" color="brand" />} onClick={() => {}} />
+								</Box>
+								<Box id="skill-box">
+									{/* I'd like to add another modal that opens on edit of the skills*/}
+									{this.skillList(volunteer.id)}
+								</Box>
+							</Box>
+							<Box elevation="small">
+								<Box direction="row" justify="start" id="notes-box">
+									<Heading level={5}>Admin Notes:</Heading>
+									<Button icon={<Edit color="brand" size="small" />} onClick={() => {}} />
+								</Box>
+								<Paragraph size="small" width="20vw">
+									{volunteer.notes}
+								</Paragraph>
+							</Box>
 						</Box>
 
 						<Box elevation="small" fill>
