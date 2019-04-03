@@ -61,6 +61,21 @@ export default class ApplicationViews extends Component {
 	refreshExpanded = (table, expandedItem, stateLocation) =>
 		api.getExpanded(table, expandedItem).then((parsedItems) => this.setState(`{${stateLocation}: ${parsedItems}`));
 
+	VolunteerHoursOnaProject = (volunteerId, projectId) => {
+		const hoursOnProject = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId && hours.projectId === projectId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return hoursOnProject;
+	};
+	totalHoursByVolunteer = (volunteerId) => {
+		const hoursByVolunteer = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quanity)
+			.reduce((a, b) => a + b, 0);
+		return hoursByVolunteer;
+	};
+
 	componentDidMount() {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
@@ -123,7 +138,12 @@ export default class ApplicationViews extends Component {
 						path="/volunteers"
 						render={(props) => {
 							return (
-								<VolunteerList {...props} volunteers={this.state.volunteers} hours={this.state.hours} />
+								<VolunteerList
+									{...props}
+									volunteers={this.state.volunteers}
+									hours={this.state.hours}
+									projects={this.state.projects}
+								/>
 							);
 						}}
 					/>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { TableCell, TableRow, CheckBox, Anchor } from 'grommet';
+import { TableCell, TableRow, CheckBox, Anchor, Button } from 'grommet';
+import { Add } from 'grommet-icons';
 import Moment from 'react-moment';
 
 export default class VolunteerListItem extends Component {
@@ -8,7 +9,7 @@ export default class VolunteerListItem extends Component {
 		return (
 			<TableRow>
 				<TableCell>
-					<CheckBox />
+					<Button icon={<Add size="small" color="brand" />} onClick={() => {}} />
 				</TableCell>
 				<TableCell>
 					<Anchor

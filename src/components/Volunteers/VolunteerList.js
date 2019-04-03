@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import { Box, Button, Heading, Table, TableBody, TableCell, TableHeader, TableRow, TextInput, CheckBox } from 'grommet';
-import { Search } from 'grommet-icons';
-import VolunteerListItem from './VolunteerListItem';
+import { Anchor, Box, Button, Form, Layer, Select, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet';
+import { Add, Close, Checkmark, Search, Trash } from 'grommet-icons';
+import Moment from 'react-moment';
+import api from '../../modules/apiManager';
 
 export default class VolunteerList extends Component {
 	state = {
 		search: '',
-		volunteers: []
+		volunteers: [],
+		value: '',
+		options: [],
+		openProjectList: undefined
 	};
+	onOpenProjectList = () => this.setState({ openProjectList: true });
+	onCloseProjectList = () => this.setState({ openProjectList: undefined });
 
 	totalHours = (volunteerId) => {
-		const hours = [].reduce((a, b) => a + b, 0);
-		if (this.props.hours.volunteerId === volunteerId) {
-			hours.push(this.props.hours.quanity);
-			return hours;
-		} else {
-			return 'N/A';
-		}
+		const hours = this.props.hours
+			.filter((hours) => hours.volunteerId === volunteerId)
+			.map((hours) => hours.quantity)
+			.reduce((a, b) => a + b, 0);
+		return hours;
 	};
 
 	handleFieldChange = (e) => {
@@ -24,7 +28,39 @@ export default class VolunteerList extends Component {
 		stateToChange[e.target.id] = e.target.value;
 		this.setState(stateToChange);
 	};
+	findProjectId = (name) => {
+		const project = this.state.options.find((project) => project.name === name);
+		return project;
+	};
+
+	constructNewVolProj = (evt) => {
+		evt.preventDefault();
+		const volunteer = {
+			volunteerId: parseInt(evt.target.id),
+			projectId: this.state.value,
+			date: new Date()
+		};
+
+		// Create the volunteer and redirect user to volunteer list
+		this.props.addToProject(volunteer).then(() => {
+			this.onCloseProjectList();
+			const newState = {};
+			api.getExpanded('volunteersProjects', 'project').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				this.setState(newState);
+			});
+		});
+	};
+	componentDidMount() {
+		const newState = {
+			options: this.props.projects.map((project) => {
+				return { name: project.name, id: project.id };
+			})
+		};
+		this.setState(newState);
+	}
 	render() {
+		const { openProjectList, value } = this.state;
 		return (
 			<Box
 				direction="column"
@@ -35,7 +71,7 @@ export default class VolunteerList extends Component {
 				flex
 				overflow={{ horizontal: 'hidden' }}
 			>
-      {/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
+				{/*This is the search functionality that has is not ready to be displayed yet. When Search is added, uncomment and display this section*/}
 				{/* <Box direction="column" pad="medium" width="50vw" align="center">
 					<Box fill="horizontal" direction="row">
 						<TextInput
@@ -59,6 +95,7 @@ export default class VolunteerList extends Component {
 					<Box direction="row" justify="between">
 						Volunteers
 						<Button
+							icon={<Add />}
 							label="Add Volunteer"
 							type="button"
 							onClick={() => {
@@ -69,7 +106,9 @@ export default class VolunteerList extends Component {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableCell scope="col" ><CheckBox></CheckBox></TableCell>
+								<TableCell scope="col">
+									<Button icon={<Add color="brand" />} onClick={() => {}} />
+								</TableCell>
 								<TableCell scope="col">Name</TableCell>
 								<TableCell scope="col">Date Joined</TableCell>
 								<TableCell scope="col">Hours Logged</TableCell>
@@ -78,18 +117,72 @@ export default class VolunteerList extends Component {
 						<TableBody>
 							{this.props.volunteers.map((volunteer) => {
 								return (
-									<VolunteerListItem
-										{...this.props}
-										volunteer={volunteer}
-										totalHours={this.totalHours}
-									/>
+									<TableRow>
+										<TableCell>
+											<Button
+												id={volunteer.id}
+												icon={<Add size="small" color="brand" />}
+												onClick={() => {
+													this.onOpenProjectList();
+												}}
+											/>
+											{openProjectList && (
+												<Layer position="top-right">
+													<Box height="small" overflow="auto" elevation="medium">
+														<Box pad="small">Select a Project:</Box>
+														<Box pad="medium">
+															<Form>
+																<Select
+																	id="projectOptions"
+																	name="projectOptions"
+																	placeholder="Select a Project"
+																	value={value}
+																	options={this.state.options.map(
+																		(options) => options.name
+																	)}
+																	onChange={({ option }) =>
+																		this.setState({
+																			projectName: option,
+																			value: this.findProjectId(option).id
+																		})}
+																/>
+																<Button
+																	icon={<Checkmark />}
+																	onClick={this.constructNewVolProj}
+																	label="Add to Project"
+																/>
+															</Form>
+														</Box>
+														<Box align="center">
+															<Button
+																icon={<Close />}
+																onClick={this.onCloseProjectList}
+															/>
+														</Box>
+													</Box>
+												</Layer>
+											)}
+										</TableCell>
+										<TableCell>
+											<Anchor
+												id={volunteer.id}
+												onClick={() => {
+													this.props.history.push(`/volunteers/${volunteer.id}`);
+												}}
+											>
+												{volunteer.name}
+											</Anchor>
+										</TableCell>
+
+										<TableCell>
+											<Moment format="MM/DD/YYYY">{volunteer.dateJoined}</Moment>
+										</TableCell>
+										<TableCell>{this.totalHours(volunteer.id)}</TableCell>
+									</TableRow>
 								);
 							})}
 						</TableBody>
 					</Table>
-					<Box direction="row" pad="medium" align="center">
-						<Button label="Add to Project" />
-					</Box>
 				</Box>
 			</Box>
 		);
