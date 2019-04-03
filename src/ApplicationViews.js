@@ -9,7 +9,8 @@ import SingleVolunteerEditForm from './components/Volunteers/SingleVolunteerEdit
 import api from './modules/apiManager';
 import ProjectList from './components/projects/ProjectsList';
 import AddProject from './components/projects/AddProject';
-import SingleProjectView from "./components/projects/SingleProjectView";
+import SingleProjectView from './components/projects/SingleProjectView';
+import EditSingleProject from './components/projects/EditSingleProject';
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -55,6 +56,16 @@ export default class ApplicationViews extends Component {
 			.then(() => api.all('projects'))
 			.then((projects) => this.setState({ projects: projects }));
 
+	deleteProject = (id) => {
+		api.deleteAndList('projects', id).then((projects) => this.setState({ projects: projects }));
+	};
+	updateProject = (editedProjectObject) => {
+		return api.put('projects', editedProjectObject).then(() => api.all('projects')).then((projects) => {
+			this.setState({
+				projects: projects
+			});
+		});
+	};
 	refresh = (what) =>
 		api.all(what).then((parsed) => {
 			this.setState({ what: parsed });
@@ -200,7 +211,8 @@ export default class ApplicationViews extends Component {
 								/>
 							);
 						}}
-					/><Route
+					/>
+					<Route
 						exact
 						path="/projects/:projectId(\d+)"
 						render={(props) => {
@@ -224,17 +236,19 @@ export default class ApplicationViews extends Component {
 						}}
 					/>
 					<Route
-						path="/projects/edit"
+						path="/projects/:projectId(\d+)/edit"
 						render={(props) => {
-							return null;
+							return (
+								<EditSingleProject
+									{...props}
+									projects={this.state.projects}
+									skills={this.state.skills}
+									updateProject={this.updateProject}
+								/>
+							);
 						}}
 					/>
-					<Route
-						path="projects/view"
-						render={(props) => {
-							return null;
-						}}
-					/>
+
 					<Route
 						exact
 						path="/reports"

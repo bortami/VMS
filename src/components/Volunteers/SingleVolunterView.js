@@ -210,6 +210,7 @@ export default class SingleVolunteerView extends Component {
 												icon={<Trash />}
 												onClick={() => {
 													this.props.delete(volunteer.id);
+													this.props.history.push('/volunteers');
 												}}
 												label="Yes, Delete Them"
 											/>

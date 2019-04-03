@@ -219,6 +219,7 @@ export default class SingleProjectView extends Component {
 													icon={<Trash />}
 													onClick={() => {
 														this.props.delete(project.id);
+														this.props.history.push("/projects")
 													}}
 													label="Yes, Delete It!"
 												/>
