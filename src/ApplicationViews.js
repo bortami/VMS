@@ -9,6 +9,7 @@ import SingleVolunteerEditForm from './components/Volunteers/SingleVolunteerEdit
 import api from './modules/apiManager';
 import ProjectList from './components/projects/ProjectsList';
 import AddProject from './components/projects/AddProject';
+import SingleProjectView from "./components/projects/SingleProjectView";
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -196,6 +197,22 @@ export default class ApplicationViews extends Component {
 									projects={this.state.projects}
 									hours={this.state.hours}
 									volunteers={this.state.volunteersProjects}
+								/>
+							);
+						}}
+					/><Route
+						exact
+						path="/projects/:projectId(\d+)"
+						render={(props) => {
+							return (
+								<SingleProjectView
+									{...props}
+									delete={this.deleteProject}
+									volunteers={this.state.volunteers}
+									projects={this.state.projects}
+									hours={this.state.hours}
+									addToProject={this.addVolunteerToProject}
+									refresh={this.refreshExpanded}
 								/>
 							);
 						}}

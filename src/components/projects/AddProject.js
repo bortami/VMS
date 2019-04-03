@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Button, Form, TextInput, TextArea, Paragraph, Heading, Select } from 'grommet';
+import { Close } from 'grommet-icons';
 
 export default class AddProject extends Component {
 	state = {
@@ -59,123 +60,133 @@ export default class AddProject extends Component {
 	render() {
 		const { options, value } = this.state;
 		return (
-			<Box direction="column">
-				<Heading level={2}>Add Project Information</Heading>
-				<Form>
-					<Paragraph>
-						Name:
-						<TextInput name="name" id="name" label="Name" onChange={this.handleFieldChange} />
-					</Paragraph>
-					<Paragraph>
-						Short Description:
-						<TextArea
-							name="shortDescription"
-							id="shortDescription"
-							label="shortDescription"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Location:
-						<TextInput
-							name="street"
-							id="street"
-							label="Stree"
-							placeholder="street address"
-							onChange={this.handleFieldChange}
-						/>
-						<TextInput
-							name="city"
-							id="city"
-							label="city"
-							placeholder="city"
-							onChange={this.handleFieldChange}
-						/>
-						<TextInput
-							name="State"
-							id="State"
-							label="state"
-							placeholder="state"
-							onChange={this.handleFieldChange}
-						/>
-						<TextInput
-							name="zip"
-							id="zip"
-							label="zip"
-							placeholder="zip code"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Special Instructions:
-						<TextArea
-							name="specialInstructions"
-							id="specialInstructions"
-							label="Special Instructions"
-							placeholder="Enter any special instructions here, such as Don't use the water"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Restrictions:
-						<TextArea
-							name="restrictions"
-							id="restrictions"
-							label="Restrictions"
-							placeholder="Enter and Restrictions for Volunteers, such as an't use Power Tools"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Experience Required:
-						<TextArea
-							name="experience"
-							id="experience"
-							label="experience"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Maximum Number of Volunteers Needed
-						<TextInput
-							name="maxVolunteers"
-							id="maxVolunteers"
-							label="Max Volunteers"
-							type="number"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Minimum Volunteer Age
-						<TextInput
-							name="minAge"
-							id="minAge"
-							label="Min Age"
-							type="number"
-							onChange={this.handleFieldChange}
-						/>
-						Maximum Volunteer Age
-						<TextInput
-							name="maxAge"
-							id="maxAge"
-							label="maxAge"
-							type="number"
-							onChange={this.handleFieldChange}
-						/>
-					</Paragraph>
-					<Paragraph>
-						Is the project Restricted based upon gender of the volunteers?
-						<Select
-							id="genderRestricted"
-							name="genderRestricted"
-							placeholder="Select Gender Restrictions"
-							value={value}
-							options={options}
-							onChange={({ option }) => this.setState({ gender: option, value: option })}
-						/>
-					</Paragraph>
-					<Button type="submit" primary label="Submit" onClick={this.constructNewProject} />
-				</Form>
+			<Box direction="row">
+				<Box direction="column">
+					<Heading level={2}>Add Project Information</Heading>
+					<Form>
+						<Paragraph>
+							Name:
+							<TextInput name="name" id="name" label="Name" onChange={this.handleFieldChange} />
+						</Paragraph>
+						<Paragraph>
+							Short Description:
+							<TextArea
+								name="shortDescription"
+								id="shortDescription"
+								label="shortDescription"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Location:
+							<TextInput
+								name="street"
+								id="street"
+								label="Stree"
+								placeholder="street address"
+								onChange={this.handleFieldChange}
+							/>
+							<TextInput
+								name="city"
+								id="city"
+								label="city"
+								placeholder="city"
+								onChange={this.handleFieldChange}
+							/>
+							<TextInput
+								name="State"
+								id="State"
+								label="state"
+								placeholder="state"
+								onChange={this.handleFieldChange}
+							/>
+							<TextInput
+								name="zip"
+								id="zip"
+								label="zip"
+								placeholder="zip code"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Special Instructions:
+							<TextArea
+								name="specialInstructions"
+								id="specialInstructions"
+								label="Special Instructions"
+								placeholder="Enter any special instructions here, such as Don't use the water"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Restrictions:
+							<TextArea
+								name="restrictions"
+								id="restrictions"
+								label="Restrictions"
+								placeholder="Enter and Restrictions for Volunteers, such as an't use Power Tools"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Experience Required:
+							<TextArea
+								name="experience"
+								id="experience"
+								label="experience"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Maximum Number of Volunteers Needed
+							<TextInput
+								name="maxVolunteers"
+								id="maxVolunteers"
+								label="Max Volunteers"
+								type="number"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Minimum Volunteer Age
+							<TextInput
+								name="minAge"
+								id="minAge"
+								label="Min Age"
+								type="number"
+								onChange={this.handleFieldChange}
+							/>
+							Maximum Volunteer Age
+							<TextInput
+								name="maxAge"
+								id="maxAge"
+								label="maxAge"
+								type="number"
+								onChange={this.handleFieldChange}
+							/>
+						</Paragraph>
+						<Paragraph>
+							Is the project Restricted based upon gender of the volunteers?
+							<Select
+								id="genderRestricted"
+								name="genderRestricted"
+								placeholder="Select Gender Restrictions"
+								value={value}
+								options={options}
+								onChange={({ option }) => this.setState({ gender: option, value: option })}
+							/>
+						</Paragraph>
+						<Button type="submit" primary label="Submit" onClick={this.constructNewProject} />
+					</Form>
+				</Box>
+				<Box>
+					<Button
+						icon={<Close />}
+						onClick={() => {
+							this.props.history.push('/projects');
+						}}
+					/>
+				</Box>
 			</Box>
 		);
 	}
