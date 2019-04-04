@@ -72,6 +72,30 @@
     {
       "name": "Gardening",
       "id": 2
+    },
+    {
+      "name": "Mowing",
+      "id": 3
+    },
+    {
+      "name": "Bookkeeping",
+      "id": 5
+    },
+    {
+      "name": "Scuba Diving",
+      "id": 9
+    },
+    {
+      "name": "Power Tools",
+      "id": 10
+    },
+    {
+      "name": "Animal Care",
+      "id": 11
+    },
+    {
+      "name": "Feeding Animals",
+      "id": 12
     }
   ],
   "volunteersProjects": [

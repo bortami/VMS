@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Heading, Text, Button, Paragraph, Form, FormField, TextInput } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Close, Trash } from 'grommet-icons';
 import api from '../../modules/apiManager';
 
 export default class UserSettings extends Component {
@@ -59,20 +59,28 @@ export default class UserSettings extends Component {
 		e.preventDefault();
 		this.state.skills.map((skill) => {
 			if (skill.name === this.state.newSkill) {
-				debugger;
 				this.setState({ errorMessage: { skillError: 'Skill already exists' } });
 				return null;
-			} else {
-				const newSkill = {
-					name: this.state.newSkill
-				};
-				return api.post(newSkill, 'skills').then(() => {
-					api.all('skills').then((skills) => {
-						this.setState({ skills: skills });
-						document.querySelector('#skills-form').reset();
-					});
-				});
 			}
+			return null;
+		});
+		const newSkill = {
+			name: this.state.newSkill
+		};
+		api.post(newSkill, 'skills').then(() => {
+			api.all('skills').then((skills) => {
+				this.setState({ skills: skills });
+				document.querySelector('#skills-form').reset();
+				return null;
+			});
+		});
+	};
+
+	doathingwithaSkll = (id) => {
+		const newState = {};
+		api.deleteAndList('skills', id).then((skills) => {
+			newState.skills = skills;
+			this.setState(newState);
 		});
 	};
 
@@ -154,9 +162,16 @@ export default class UserSettings extends Component {
 						<Text size="xsmall" color="red">
 							Deleting skills cannot be undone and can have unintended consequences!
 						</Text>
-						{this.state.skills.map((skill) => (
-							<Button onClick={this.doathingwithaSkll} type="button" label={skill.name} />
-						))}
+						<div>
+							{this.state.skills.map((skill) => (
+								<Button
+									onClick={() => this.doathingwithaSkll(skill.id)}
+									type="button"
+									label={skill.name}
+									icon={<Trash />}
+								/>
+							))}
+						</div>
 					</Box>
 				</Box>
 
