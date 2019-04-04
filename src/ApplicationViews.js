@@ -31,10 +31,9 @@ export default class ApplicationViews extends Component {
 	getSingleUserbyUsername = (variable) => api.singleByAttribute('organizations', 'username', variable);
 
 	addOrganization = (organization) => {
-		api
-			.post(organization, 'organizations')
-			.then(() => api.all('organizations'))
-			.then((organizations) => this.setState({ organizations: organizations }));
+		return api.post(organization, 'organizations').then(() => {
+			return api.all('organizations').then((organizations) => this.setState({ organizations: organizations }));
+		});
 	};
 
 	addVolunteer = (volunteer) =>
@@ -78,9 +77,9 @@ export default class ApplicationViews extends Component {
 			});
 		});
 	};
-	refresh = (what) =>
-		api.all(what).then((parsed) => {
-			this.setState({ what: parsed });
+	refreshUsers = () =>
+		api.all('organizations').then((parsed) => {
+			this.setState({ organizations: parsed });
 		});
 	refreshExpanded = (table, expandedItem, stateLocation) =>
 		api.getExpanded(table, expandedItem).then((parsedItems) => this.setState(`{${stateLocation}: ${parsedItems}`));
@@ -145,7 +144,7 @@ export default class ApplicationViews extends Component {
 									{...props}
 									addUser={this.addOrganization}
 									getUser={this.getSingleUserbyUsername}
-									refreshEmployees={this.refresh}
+									refresh={this.refreshUsers}
 								/>
 							);
 						}}

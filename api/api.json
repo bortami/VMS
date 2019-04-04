@@ -34,11 +34,18 @@
       "password": "a"
     },
     {
-      "email": "org@org.com",
-      "password": "a",
-      "username": "orgie",
-      "name": "Organization",
+      "email": "o@o.co",
+      "password": "o",
+      "username": "o",
+      "name": "o",
       "id": 2
+    },
+    {
+      "email": "o@o.com",
+      "password": "o",
+      "username": "a",
+      "name": "o",
+      "id": 3
     }
   ],
   "hours": [
