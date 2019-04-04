@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormField, Button, Box, Heading, TextInput, Paragraph } from 'grommet';
+import { Form, FormField, Button, Box, Heading, Text, TextInput, Paragraph } from 'grommet';
 import { Close } from 'grommet-icons';
 
 export default class Register extends Component {
@@ -8,7 +8,8 @@ export default class Register extends Component {
 		password: '',
 		passwordConfirm: '',
 		username: '',
-		name: ''
+		name: '',
+		errorMessage: {}
 	};
 	handleFieldChange = (e) => {
 		const stateToChange = {};
@@ -19,7 +20,7 @@ export default class Register extends Component {
 		e.preventDefault();
 		if (this.state.password !== this.state.passwordConfirm) {
 			const errorMessage = "your passwords don't match";
-			this.setState({ errorMessage: errorMessage });
+			this.setState({ errorMessage: { passwordError: errorMessage } });
 			return null;
 		}
 		const newUser = {
@@ -28,16 +29,18 @@ export default class Register extends Component {
 			username: this.state.username,
 			name: this.state.name
 		};
-		this.props.getUser(this.state.username).then((user) => {
+		this.props.getUser(newUser.username).then((user) => {
 			if (user.length > 0) {
 				const errorMessage = 'That username already exists';
-				this.setState({ errorMessage: errorMessage });
+				this.setState({ errorMessage: { usernameError: errorMessage } });
 			} else {
-				this.props.addUser(newUser).then((user) => {
-					sessionStorage.setItem('userId', user.id);
-					this.setState({ login: true });
-					this.props.history.push('/');
-					this.props.refresh('organizations');
+				this.props.addUser(newUser).then(() => {
+					debugger;
+					this.props.getUser(newUser.username).then((user) => {
+						sessionStorage.setItem('userId', user[0].id);
+						this.props.history.push('/');
+						this.props.refresh();
+					});
 				});
 			}
 		});
@@ -64,6 +67,9 @@ export default class Register extends Component {
 								onChange={this.handleFieldChange}
 								required
 							/>
+							<Text color="red" size="small">
+								{this.state.errorMessage.usernameError}
+							</Text>
 						</FormField>
 						<FormField label="Email Address" htmlFor="email">
 							<TextInput
@@ -91,6 +97,9 @@ export default class Register extends Component {
 								onChange={this.handleFieldChange}
 								required
 							/>
+							<Text color="red" size="small">
+								{this.state.errorMessage.passwordError}
+							</Text>
 						</FormField>
 						<Paragraph />
 						<Button
