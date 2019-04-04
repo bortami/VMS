@@ -29,7 +29,7 @@
     {
       "id": 1,
       "name": "Alliance for Alliances",
-      "username": "AforA",
+      "username": "a4a",
       "email": "info@a4a.org",
       "password": "a"
     }
@@ -68,6 +68,34 @@
     {
       "id": 1,
       "name": "Planting"
+    },
+    {
+      "name": "Gardening",
+      "id": 2
+    },
+    {
+      "name": "Mowing",
+      "id": 3
+    },
+    {
+      "name": "Bookkeeping",
+      "id": 5
+    },
+    {
+      "name": "Scuba Diving",
+      "id": 9
+    },
+    {
+      "name": "Power Tools",
+      "id": 10
+    },
+    {
+      "name": "Animal Care",
+      "id": 11
+    },
+    {
+      "name": "Feeding Animals",
+      "id": 12
     }
   ],
   "volunteersProjects": [
@@ -86,14 +114,14 @@
     {
       "volunteerId": 3,
       "projectId": 1,
-      "date": "2019-04-03T17:30:47.520Z",
-      "id": 4
+      "date": "2019-04-04T02:11:12.818Z",
+      "id": 3
     },
     {
       "volunteerId": 3,
       "projectId": 1,
-      "date": "2019-04-03T23:05:21.262Z",
-      "id": 5
+      "date": "2019-04-04T02:11:16.807Z",
+      "id": 4
     }
   ],
   "volunteersSkills": [

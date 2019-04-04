@@ -13,6 +13,7 @@ import SingleProjectView from './components/projects/SingleProjectView';
 import EditSingleProject from './components/projects/EditSingleProject';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
+import UserSettings from './components/Users/userSetting';
 
 export default class ApplicationViews extends Component {
 	state = {
@@ -30,10 +31,9 @@ export default class ApplicationViews extends Component {
 	getSingleUserbyUsername = (variable) => api.singleByAttribute('organizations', 'username', variable);
 
 	addOrganization = (organization) => {
-		api
-			.post(organization, 'organizations')
-			.then(() => api.all('organizations'))
-			.then((organizations) => this.setState({ organizations: organizations }));
+		return api.post(organization, 'organizations').then(() => {
+			return api.all('organizations').then((organizations) => this.setState({ organizations: organizations }));
+		});
 	};
 
 	addVolunteer = (volunteer) =>
@@ -77,9 +77,9 @@ export default class ApplicationViews extends Component {
 			});
 		});
 	};
-	refresh = (what) =>
-		api.all(what).then((parsed) => {
-			this.setState({ what: parsed });
+	refreshUsers = () =>
+		api.all('organizations').then((parsed) => {
+			this.setState({ organizations: parsed });
 		});
 	refreshExpanded = (table, expandedItem, stateLocation) =>
 		api.getExpanded(table, expandedItem).then((parsedItems) => this.setState(`{${stateLocation}: ${parsedItems}`));
@@ -103,22 +103,20 @@ export default class ApplicationViews extends Component {
 		const newState = {};
 		api.all('volunteers').then((parsedVolunteers) => {
 			newState.volunteers = parsedVolunteers;
-			api.all('organizations').then((parsedOrganizations) => {
-				newState.organizations = parsedOrganizations;
-				api.all('projects').then((parsedProjects) => {
-					newState.projects = parsedProjects;
-					api.all('skills').then((parsedSkills) => {
-						newState.skills = parsedSkills;
-						api.all('projectsSkills').then((parsedPS) => {
-							newState.projectSkills = parsedPS;
-							api.all('volunteersProjects').then((parsedvolunteersProjects) => {
-								newState.volunteersProjects = parsedvolunteersProjects;
-								api.all('volunteersSkills').then((parsedvolunteersSkills) => {
-									newState.volunteersSkills = parsedvolunteersSkills;
-									api.all('hours').then((parsedHours) => {
-										newState.hours = parsedHours;
-										this.setState(newState);
-									});
+
+			api.all('projects').then((parsedProjects) => {
+				newState.projects = parsedProjects;
+				api.all('skills').then((parsedSkills) => {
+					newState.skills = parsedSkills;
+					api.all('projectsSkills').then((parsedPS) => {
+						newState.projectSkills = parsedPS;
+						api.all('volunteersProjects').then((parsedvolunteersProjects) => {
+							newState.volunteersProjects = parsedvolunteersProjects;
+							api.all('volunteersSkills').then((parsedvolunteersSkills) => {
+								newState.volunteersSkills = parsedvolunteersSkills;
+								api.all('hours').then((parsedHours) => {
+									newState.hours = parsedHours;
+									this.setState(newState);
 								});
 							});
 						});
@@ -146,7 +144,7 @@ export default class ApplicationViews extends Component {
 									{...props}
 									addUser={this.addOrganization}
 									getUser={this.getSingleUserbyUsername}
-									refreshEmployees={this.refresh}
+									refresh={this.refreshUsers}
 								/>
 							);
 						}}
@@ -296,10 +294,10 @@ export default class ApplicationViews extends Component {
 
 					<Route
 						exact
-						path="/profile"
+						path="/settings"
 						render={(props) => {
 							if (this.props.isAuthenticated()) {
-								return null;
+								return <UserSettings {...props} skills={this.state.skills} />;
 							} else {
 								return <Redirect to="/login" />;
 							}
