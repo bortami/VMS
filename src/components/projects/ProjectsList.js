@@ -44,6 +44,7 @@ export default class ProjectList extends Component {
 						<Button label="Newest" />
 					</Box>
 				</Box> */}
+				{/*To add volunteers to a project in bulk with checkboxes: create indivual objects inside a bigger object, then push the entire object as a post. Or find a  copy() method to copy based on number of volunteers....keep brainstorming. there's a way to do it. Checkout "Seasons" on grommet */}
 				<Box elevation="medium" pad="medium">
 					<Box direction="row" justify="between">
 						Projects
