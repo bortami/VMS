@@ -196,18 +196,8 @@
     },
     {
       "projectId": 4,
-      "skillId": 1,
-      "id": 4
-    },
-    {
-      "projectId": 4,
       "skillId": 2,
       "id": 5
-    },
-    {
-      "projectId": 4,
-      "skillId": 5,
-      "id": 6
     }
   ]
 }

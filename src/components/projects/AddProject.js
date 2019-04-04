@@ -3,6 +3,7 @@ import { Box, Button, Form, TextInput, TextArea, Paragraph, Heading, Select } fr
 import { Close } from 'grommet-icons';
 import api from '../../modules/apiManager';
 
+
 const defaultOptions = [];
 const objectOptions = [];
 api.all('skills').then((skills) =>
@@ -12,7 +13,6 @@ api.all('skills').then((skills) =>
 		return null;
 	})
 );
-
 export default class AddProject extends Component {
 	state = {
 		id: '',

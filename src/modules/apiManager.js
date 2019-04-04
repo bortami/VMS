@@ -6,6 +6,11 @@ const api = {
 	single: (branch, id) => {
 		return fetch(`${remoteURL}/${branch}/${id}`).then((e) => e.json());
 	},
+	delete: (branch, id) => {
+		return fetch(`${remoteURL}/${branch}/${id}`, {
+			method: 'DELETE'
+		}).then((e) => e.json());
+	},
 	deleteAndList: (branch, id) => {
 		return fetch(`${remoteURL}/${branch}/${id}`, {
 			method: 'DELETE'
