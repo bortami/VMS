@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
 import { Box, Button, Form, TextInput, TextArea, Paragraph, Heading, Select } from 'grommet';
 import { Close } from 'grommet-icons';
+import api from '../../modules/apiManager';
+
+const defaultOptions = [];
+const objectOptions = [];
+api.all('skills').then((skills) =>
+	skills.map((skill) => {
+		defaultOptions.push(skill.name);
+		objectOptions.push({ lab: skill.name, val: skill.id });
+		return null;
+	})
+);
 
 export default class AddProject extends Component {
 	state = {
+		id: '',
 		name: '',
 		shortDescription: '',
 		categoryId: '',
@@ -18,9 +30,10 @@ export default class AddProject extends Component {
 		minAge: '',
 		maxAge: '',
 		genderRestricted: '',
-		options: [ 'Males Only', 'Females Only', 'No Restrictions' ],
+		options: objectOptions,
 		value: ''
 	};
+
 	// Update state whenever an input field is edited
 	handleFieldChange = (evt) => {
 		const stateToChange = {};
@@ -28,16 +41,19 @@ export default class AddProject extends Component {
 		this.setState(stateToChange);
 	};
 
-	/*
-        Local method for validation, creating Project object, and
-        invoking the function reference passed from parent component
-     */
+	constructNewProjectSkill = (projectId, skillId) => {
+		const newProjectSkill = {
+			projectId: projectId,
+			skillId: skillId
+		};
+		api.post(newProjectSkill, 'projectsSkills');
+	};
+
 	constructNewProject = (evt) => {
 		evt.preventDefault();
 		const project = {
 			name: this.state.name,
 			shortDescription: this.state.shortDescription,
-			categoryId: this.state.categoryId,
 			street: this.state.street,
 			city: this.state.city,
 			State: this.state.State,
@@ -48,14 +64,18 @@ export default class AddProject extends Component {
 			maxVolunteers: this.state.maxVolunteers,
 			minAge: this.state.minAge,
 			maxAge: this.state.maxAge,
-			genderRestricted: this.state.genderRestricted,
 			date: new Date(),
 			// Make sure the employeeId is saved to the database as a number since it is a foreign key.
 			organizationId: parseInt(sessionStorage.getItem('userId'))
 		};
-
 		// Create the project and redirect user to project list
-		this.props.addProject(project).then(() => this.props.history.push('/projects'));
+		this.props.addProject(project).then(() => {
+			api.singleByAttribute('projects',"name", project.name).then((project) => {
+				debugger
+				this.state.value.map((skill) => this.constructNewProjectSkill(project[0].id, skill.val));
+				this.props.history.push('/projects');
+			});
+		});
 	};
 	render() {
 		const { options, value } = this.state;
@@ -166,15 +186,28 @@ export default class AddProject extends Component {
 							/>
 						</Paragraph>
 						<Paragraph>
-							Is the project Restricted based upon gender of the volunteers?
-							<Select
-								id="genderRestricted"
-								name="genderRestricted"
-								placeholder="Select Gender Restrictions"
-								value={value}
-								options={options}
-								onChange={({ option }) => this.setState({ gender: option, value: option })}
-							/>
+							Skills needed:
+							<Box fill align="center" justify="start" pad="large">
+								<Select
+									size="medium"
+									placeholder="Select Skills"
+									multiple
+									closeOnChange={false}
+									disabledKey="dis"
+									labelKey="lab"
+									valueKey="val"
+									value={value}
+									options={options}
+									onChange={({ value: nextValue }) => this.setState({ value: nextValue })}
+									onClose={() => this.setState({ options: objectOptions })}
+									onSearch={(text) => {
+										const exp = new RegExp(text, 'i');
+										this.setState({
+											options: objectOptions.filter((o) => exp.test(o.lab))
+										});
+									}}
+								/>
+							</Box>
 						</Paragraph>
 						<Button type="submit" primary label="Submit" onClick={this.constructNewProject} />
 					</Form>
