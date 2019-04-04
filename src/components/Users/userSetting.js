@@ -159,17 +159,23 @@ export default class UserSettings extends Component {
 						<Paragraph color="red">{this.state.errorMessage.skillError}</Paragraph>
 					</Form>
 					<Box>
+						<Text>
+							<strong>All available skills</strong>
+						</Text>
 						<Text size="xsmall" color="red">
 							Deleting skills cannot be undone and can have unintended consequences!
 						</Text>
 						<div>
 							{this.state.skills.map((skill) => (
-								<Button
-									onClick={() => this.doathingwithaSkll(skill.id)}
-									type="button"
-									label={skill.name}
-									icon={<Trash />}
-								/>
+								<li>
+									<Button
+										plain
+										onClick={() => this.doathingwithaSkll(skill.id)}
+										type="button"
+										icon={<Trash size="small" />}
+									/>
+									{skill.name}
+								</li>
 							))}
 						</div>
 					</Box>
