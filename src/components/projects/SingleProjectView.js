@@ -29,14 +29,27 @@ api.all('skills').then((skills) =>
 		return null;
 	})
 );
+
+const defaultVolunteerOptions = [];
+const objectVolunteerOptions = [];
+api.all('volunteers').then((volunteers) =>
+	volunteers.map((volunteer) => {
+		defaultVolunteerOptions.push(volunteer.name);
+		objectVolunteerOptions.push({ lab: volunteer.name, val: volunteer.id });
+		return null;
+	})
+);
 export default class SingleProjectView extends Component {
 	state = {
 		openDelete: undefined,
 		openVolunteerList: undefined,
 		openSkillsEdit: undefined,
 		value: '',
+		volunteerValue: '',
 		options: [],
+		volunteerOptions: objectVolunteerOptions,
 		volunteers: [],
+		volunteerName: '',
 		skills: [],
 		skillnames: objectOptions,
 		select: ''
@@ -75,11 +88,9 @@ export default class SingleProjectView extends Component {
 			api.getExpanded('projectsSkills', 'skill').then((skills) => this.setState({ skills: skills }));
 		});
 	};
-	constructNewProjectSkill = (e, projectId, skillId) => {
-		e.preventDefault();
-
+	constructNewProjectSkill = (skillId) => {
 		const newProjectSkill = {
-			projectId: projectId,
+			projectId: parseInt(this.props.match.params.projectId),
 			skillId: skillId
 		};
 
@@ -132,14 +143,14 @@ export default class SingleProjectView extends Component {
 		return projectVolunteerList;
 	};
 	findVolunteerId = (name) => {
-		const volunteer = this.state.options.find((volunteer) => volunteer.name === name);
+		const volunteer = this.state.volunteerOptions.find((volunteer) => volunteer.name === name);
 		return volunteer;
 	};
 
 	constructNewVolProj = (evt) => {
 		evt.preventDefault();
 		const volunteer = {
-			volunteerId: this.state.value,
+			volunteerId: document.querySelector("#project-volunteer-select").value,
 			projectId: parseInt(this.props.match.params.projectId),
 			date: new Date()
 		};
@@ -157,11 +168,7 @@ export default class SingleProjectView extends Component {
 	};
 
 	componentDidMount() {
-		const newState = {
-			options: this.props.volunteers.map((volunteer) => {
-				return { name: volunteer.name, id: volunteer.id };
-			})
-		}; //This only works when directing from the projectlist. If I refresh the page, it doesn't. //
+		const newState = {}; //This only works when directing from the projectlist. If I refresh the page, it doesn't. //
 		api.getExpanded('projectsSkills', 'skill').then((parsedSkills) => {
 			newState.skills = parsedSkills;
 			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
@@ -172,7 +179,15 @@ export default class SingleProjectView extends Component {
 	}
 
 	render() {
-		const { openDelete, openVolunteerList, openSkillsEdit, value, skillnames } = this.state;
+		const {
+			openDelete,
+			openVolunteerList,
+			openSkillsEdit,
+			value,
+			skillnames,
+			volunteerOptions,
+			volunteerValue
+		} = this.state;
 		const project = this.props.projects.find((a) => a.id === parseInt(this.props.match.params.projectId)) || {};
 		return (
 			<Box key={project.id} direction="row" width="horizontal" basis="full">
@@ -199,18 +214,9 @@ export default class SingleProjectView extends Component {
 										<Box pad="small">Select a Volunteer</Box>
 										<Box pad="medium">
 											<Form>
-												<Select
-													id="volunteerOptions"
-													name="volunteerOptions"
-													placeholder="Select a Volunteer"
-													value={value}
-													options={this.state.options.map((options) => options.name)}
-													onChange={({ option }) =>
-														this.setState({
-															volunteerName: option,
-															value: this.findVolunteerId(option).id
-														})}
-												/>
+												<select name="volunteer-select" id="project-volunteer-select" >
+												{this.state.volunteerOptions.map(volunteer=> <option value={volunteer.val} label={volunteer.lab}>{volunteer.lab}</option>)}
+												</select>
 												<Button
 													icon={<Checkmark />}
 													onClick={this.constructNewVolProj}
@@ -290,7 +296,7 @@ export default class SingleProjectView extends Component {
 										<Form
 											onSubmit={() => {
 												this.state.value.map((value) =>
-													this.constructNewProjectSkill(project.id, value.val)
+													this.constructNewProjectSkill(value.val)
 												);
 											}}
 										>
@@ -299,7 +305,8 @@ export default class SingleProjectView extends Component {
 													{this.state.skills
 														.filter(
 															(skill) =>
-																skill.projectId === parseInt(this.props.match.params.projectId)
+																skill.projectId ===
+																parseInt(this.props.match.params.projectId)
 														)
 														.map((skill) => (
 															<li key={skill.skill.id}>
