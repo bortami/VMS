@@ -189,12 +189,6 @@
       "projectId": 4,
       "date": "2019-04-05T14:03:08.110Z",
       "id": 6
-    },
-    {
-      "volunteerId": "3",
-      "projectId": 4,
-      "date": "2019-04-05T15:07:20.329Z",
-      "id": 7
     }
   ],
   "volunteersSkills": [
@@ -234,6 +228,11 @@
       "projectId": 4,
       "skillId": 5,
       "id": 16
+    },
+    {
+      "projectId": 4,
+      "skillId": 3,
+      "id": 17
     }
   ]
 }
