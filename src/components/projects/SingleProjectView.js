@@ -45,14 +45,11 @@ export default class SingleProjectView extends Component {
 		openVolunteerList: undefined,
 		openSkillsEdit: undefined,
 		value: '',
-		volunteerValue: '',
 		options: [],
 		volunteerOptions: objectVolunteerOptions,
 		volunteers: [],
-		volunteerName: '',
 		skills: [],
-		skillnames: objectOptions,
-		select: ''
+		skillnames: objectOptions
 	};
 	//this are the open and close functions for the modals and layers//
 	onOpenSkillsEdit = () => this.setState({ openSkillsEdit: true });
@@ -150,7 +147,7 @@ export default class SingleProjectView extends Component {
 	constructNewVolProj = (evt) => {
 		evt.preventDefault();
 		const volunteer = {
-			volunteerId: document.querySelector("#project-volunteer-select").value,
+			volunteerId: document.querySelector('#project-volunteer-select').value,
 			projectId: parseInt(this.props.match.params.projectId),
 			date: new Date()
 		};
@@ -168,7 +165,7 @@ export default class SingleProjectView extends Component {
 	};
 
 	componentDidMount() {
-		const newState = {}; //This only works when directing from the projectlist. If I refresh the page, it doesn't. //
+		const newState = {}; 
 		api.getExpanded('projectsSkills', 'skill').then((parsedSkills) => {
 			newState.skills = parsedSkills;
 			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
@@ -179,15 +176,7 @@ export default class SingleProjectView extends Component {
 	}
 
 	render() {
-		const {
-			openDelete,
-			openVolunteerList,
-			openSkillsEdit,
-			value,
-			skillnames,
-			volunteerOptions,
-			volunteerValue
-		} = this.state;
+		const { openDelete, openVolunteerList, openSkillsEdit, value, skillnames } = this.state;
 		const project = this.props.projects.find((a) => a.id === parseInt(this.props.match.params.projectId)) || {};
 		return (
 			<Box key={project.id} direction="row" width="horizontal" basis="full">
@@ -214,8 +203,12 @@ export default class SingleProjectView extends Component {
 										<Box pad="small">Select a Volunteer</Box>
 										<Box pad="medium">
 											<Form>
-												<select name="volunteer-select" id="project-volunteer-select" >
-												{this.state.volunteerOptions.map(volunteer=> <option value={volunteer.val} label={volunteer.lab}>{volunteer.lab}</option>)}
+												<select name="volunteer-select" id="project-volunteer-select">
+													{this.state.volunteerOptions.map((volunteer) => (
+														<option value={volunteer.val} label={volunteer.lab}>
+															{volunteer.lab}
+														</option>
+													))}
 												</select>
 												<Button
 													icon={<Checkmark />}
@@ -274,7 +267,7 @@ export default class SingleProjectView extends Component {
 										onClick={this.onOpenSkillsEdit}
 									/>
 								</Heading>
-								{/* I'd like to add another modal that opens on edit of the skills*/}
+								
 								{this.skillList(project.id)}
 							</Box>
 
