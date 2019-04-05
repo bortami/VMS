@@ -9,6 +9,7 @@ import {
 	Button,
 	Select,
 	Form,
+	FormField,
 	Text,
 	Table,
 	TableRow,
@@ -19,14 +20,45 @@ import {
 } from 'grommet';
 import { AddCircle, Trash, Close, Checkmark, Edit, SubtractCircle } from 'grommet-icons';
 
+const defaultOptions = [];
+const objectOptions = [];
+api.all('skills').then((skills) =>
+	skills.map((skill) => {
+		defaultOptions.push(skill.name);
+		objectOptions.push({ lab: skill.name, val: skill.id });
+		return null;
+	})
+);
+
+const defaultVolunteerOptions = [];
+const objectVolunteerOptions = [];
+api.all('volunteers').then((volunteers) =>
+	volunteers.map((volunteer) => {
+		defaultVolunteerOptions.push(volunteer.name);
+		objectVolunteerOptions.push({ lab: volunteer.name, val: volunteer.id });
+		return null;
+	})
+);
 export default class SingleProjectView extends Component {
 	state = {
 		openDelete: undefined,
 		openVolunteerList: undefined,
+		openSkillsEdit: undefined,
 		value: '',
+		volunteerValue: '',
 		options: [],
+		volunteerOptions: objectVolunteerOptions,
 		volunteers: [],
-		skills: []
+		volunteerName: '',
+		skills: [],
+		skillnames: objectOptions,
+		select: ''
+	};
+	//this are the open and close functions for the modals and layers//
+	onOpenSkillsEdit = () => this.setState({ openSkillsEdit: true });
+
+	onCloseSkillsEdit = () => {
+		this.setState({ openSkillsEdit: undefined });
 	};
 
 	onOpenDelete = () => this.setState({ openDelete: true });
@@ -35,6 +67,7 @@ export default class SingleProjectView extends Component {
 	onCloseDelete = () => this.setState({ openDelete: undefined });
 	onCloseVolunteerList = () => this.setState({ openVolunteerList: undefined });
 
+	//hours manipulation//
 	totalHours = (projectId) => {
 		const total = this.props.hours
 			.filter((hours) => hours.projectId === projectId)
@@ -42,12 +75,36 @@ export default class SingleProjectView extends Component {
 			.reduce((a, b) => a + b, 0);
 		return total;
 	};
+
+	//manipulating skills information
 	skillList = (projectId) => {
 		const list = this.state.skills
 			.filter((skill) => skill.projectId === projectId)
-			.map((skill) => <Button label={skill.skill.name} margin="small" size="small" plain />);
+			.map((skill) => <li key={skill.skill.id}>{skill.skill.name} </li>);
 		return list;
 	};
+	deleteProjectsSkill = (id) => {
+		api.delete('projectsSkills', id).then(() => {
+			api.getExpanded('projectsSkills', 'skill').then((skills) => this.setState({ skills: skills }));
+		});
+	};
+	constructNewProjectSkill = (skillId) => {
+		const newProjectSkill = {
+			projectId: parseInt(this.props.match.params.projectId),
+			skillId: skillId
+		};
+
+		api.post(newProjectSkill, 'projectsSkills').then(() => {
+			this.onCloseSkillsEdit();
+			const newState = {};
+			//shows new skill list on the project page//
+			api.getExpanded('projectsSkills', 'skill').then((skills) => {
+				newState.skills = skills;
+				this.setState(newState);
+			});
+		});
+	};
+
 	VolunteerHoursOnaProject = (volunteerId, projectId) => {
 		const hoursOnProject = this.props.hours
 			.filter((hours) => hours.volunteerId === volunteerId && hours.projectId === projectId)
@@ -86,14 +143,14 @@ export default class SingleProjectView extends Component {
 		return projectVolunteerList;
 	};
 	findVolunteerId = (name) => {
-		const volunteer = this.state.options.find((volunteer) => volunteer.name === name);
+		const volunteer = this.state.volunteerOptions.find((volunteer) => volunteer.name === name);
 		return volunteer;
 	};
 
 	constructNewVolProj = (evt) => {
 		evt.preventDefault();
 		const volunteer = {
-			volunteerId: this.state.value,
+			volunteerId: document.querySelector("#project-volunteer-select").value,
 			projectId: parseInt(this.props.match.params.projectId),
 			date: new Date()
 		};
@@ -111,11 +168,7 @@ export default class SingleProjectView extends Component {
 	};
 
 	componentDidMount() {
-		const newState = {
-			options: this.props.volunteers.map((volunteer) => {
-				return { name: volunteer.name, id: volunteer.id };
-			})
-		}; //This only works when directing from the projectlist. If I refresh the page, it doesn't. //
+		const newState = {}; //This only works when directing from the projectlist. If I refresh the page, it doesn't. //
 		api.getExpanded('projectsSkills', 'skill').then((parsedSkills) => {
 			newState.skills = parsedSkills;
 			api.getExpanded('volunteersProjects', 'volunteer').then((parsedVolunteers) => {
@@ -126,7 +179,15 @@ export default class SingleProjectView extends Component {
 	}
 
 	render() {
-		const { openDelete, openVolunteerList, value } = this.state;
+		const {
+			openDelete,
+			openVolunteerList,
+			openSkillsEdit,
+			value,
+			skillnames,
+			volunteerOptions,
+			volunteerValue
+		} = this.state;
 		const project = this.props.projects.find((a) => a.id === parseInt(this.props.match.params.projectId)) || {};
 		return (
 			<Box key={project.id} direction="row" width="horizontal" basis="full">
@@ -153,18 +214,9 @@ export default class SingleProjectView extends Component {
 										<Box pad="small">Select a Volunteer</Box>
 										<Box pad="medium">
 											<Form>
-												<Select
-													id="volunteerOptions"
-													name="volunteerOptions"
-													placeholder="Select a Volunteer"
-													value={value}
-													options={this.state.options.map((options) => options.name)}
-													onChange={({ option }) =>
-														this.setState({
-															volunteerName: option,
-															value: this.findVolunteerId(option).id
-														})}
-												/>
+												<select name="volunteer-select" id="project-volunteer-select" >
+												{this.state.volunteerOptions.map(volunteer=> <option value={volunteer.val} label={volunteer.lab}>{volunteer.lab}</option>)}
+												</select>
 												<Button
 													icon={<Checkmark />}
 													onClick={this.constructNewVolProj}
@@ -213,10 +265,91 @@ export default class SingleProjectView extends Component {
 									{project.specialInstructions}
 								</Text>
 
-								<Heading level={5}>Skills Required</Heading>
+								<Heading level={5}>
+									Skills Required<Button
+										margin="small"
+										icon={<Edit />}
+										plain
+										size="small"
+										onClick={this.onOpenSkillsEdit}
+									/>
+								</Heading>
 								{/* I'd like to add another modal that opens on edit of the skills*/}
 								{this.skillList(project.id)}
 							</Box>
+
+							{openSkillsEdit && (
+								<Layer
+									position="right"
+									full="vertical"
+									modal
+									onClickOutside={this.onCloseSkillsEdit}
+									onEsc={this.onCloseSkillsEdit}
+								>
+									<Box fill="vertical" overflow="auto" width="medium" pad="medium">
+										<Box flex={false} direction="row" justify="between">
+											<Heading level={2} margin="none">
+												Edit Project's Skills
+											</Heading>
+											<Button icon={<Close />} onClick={this.onCloseSkillsEdit} />
+										</Box>
+										<Form
+											onSubmit={() => {
+												this.state.value.map((value) =>
+													this.constructNewProjectSkill(value.val)
+												);
+											}}
+										>
+											<Box flex="grow" overflow="auto" pad={{ vertical: 'medium' }}>
+												<FormField label="Remove Skills from Project">
+													{this.state.skills
+														.filter(
+															(skill) =>
+																skill.projectId ===
+																parseInt(this.props.match.params.projectId)
+														)
+														.map((skill) => (
+															<li key={skill.skill.id}>
+																<Button
+																	icon={<SubtractCircle size="small" color="red" />}
+																	plain
+																	onClick={() => this.deleteProjectsSkill(skill.id)}
+																/>{' '}
+																{skill.skill.name}
+															</li>
+														))}
+												</FormField>
+												<FormField label="Add Skills to Project">
+													<Select
+														size="medium"
+														placeholder="Select Skills"
+														multiple
+														closeOnChange={false}
+														disabledKey="dis"
+														labelKey="lab"
+														valueKey="val"
+														value={value}
+														options={skillnames}
+														onChange={({ value: nextValue }) =>
+															this.setState({ value: nextValue })}
+														onClose={() => this.setState({ options: objectOptions })}
+														onSearch={(text) => {
+															const exp = new RegExp(text, 'i');
+															this.setState({
+																skillnames: objectOptions.filter((o) => exp.test(o.lab))
+															});
+														}}
+													/>
+												</FormField>
+											</Box>
+											<Box flex={false} as="footer" align="start">
+												<Button type="submit" label="Submit" primary />
+											</Box>
+										</Form>
+									</Box>
+								</Layer>
+							)}
+
 							<Box>
 								<Anchor onClick={this.onOpenDelete} margin="small">
 									<Trash /> Delete Project
