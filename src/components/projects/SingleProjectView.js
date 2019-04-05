@@ -67,7 +67,7 @@ export default class SingleProjectView extends Component {
 	skillList = (projectId) => {
 		const list = this.state.skills
 			.filter((skill) => skill.projectId === projectId)
-			.map((skill) => <li kay={skill.skill.id}>{skill.skill.name} </li>);
+			.map((skill) => <li key={skill.skill.id}>{skill.skill.name} </li>);
 		return list;
 	};
 	deleteProjectsSkill = (id) => {
@@ -75,12 +75,23 @@ export default class SingleProjectView extends Component {
 			api.getExpanded('projectsSkills', 'skill').then((skills) => this.setState({ skills: skills }));
 		});
 	};
-	constructNewProjectSkill = (projectId, skillId) => {
+	constructNewProjectSkill = (e, projectId, skillId) => {
+		e.preventDefault();
+
 		const newProjectSkill = {
 			projectId: projectId,
 			skillId: skillId
 		};
-		api.post(newProjectSkill, 'projectsSkills');
+
+		api.post(newProjectSkill, 'projectsSkills').then(() => {
+			this.onCloseSkillsEdit();
+			const newState = {};
+			//shows new skill list on the project page//
+			api.getExpanded('projectsSkills', 'skill').then((skills) => {
+				newState.skills = skills;
+				this.setState(newState);
+			});
+		});
 	};
 
 	VolunteerHoursOnaProject = (volunteerId, projectId) => {
@@ -278,25 +289,28 @@ export default class SingleProjectView extends Component {
 										</Box>
 										<Form
 											onSubmit={() => {
-												this.state.value.map((value) => {
-													this.constructNewProjectSkill(project.id, value.val);
-												});
-												this.onCloseSkillsEdit();
-												return null;
+												this.state.value.map((value) =>
+													this.constructNewProjectSkill(project.id, value.val)
+												);
 											}}
 										>
 											<Box flex="grow" overflow="auto" pad={{ vertical: 'medium' }}>
 												<FormField label="Remove Skills from Project">
-													{this.state.skills.map((skill) => (
-														<li key={skill.skill.id}>
-															<Button
-																icon={<SubtractCircle size="small" color="red" />}
-																plain
-																onClick={() => this.deleteProjectsSkill(skill.id)}
-															/>{' '}
-															{skill.skill.name}
-														</li>
-													))}
+													{this.state.skills
+														.filter(
+															(skill) =>
+																skill.projectId === parseInt(this.props.match.params.projectId)
+														)
+														.map((skill) => (
+															<li key={skill.skill.id}>
+																<Button
+																	icon={<SubtractCircle size="small" color="red" />}
+																	plain
+																	onClick={() => this.deleteProjectsSkill(skill.id)}
+																/>{' '}
+																{skill.skill.name}
+															</li>
+														))}
 												</FormField>
 												<FormField label="Add Skills to Project">
 													<Select

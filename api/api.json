@@ -147,6 +147,10 @@
     {
       "name": "Feeding Animals",
       "id": 12
+    },
+    {
+      "name": "Helping",
+      "id": 13
     }
   ],
   "volunteersProjects": [
@@ -190,14 +194,19 @@
   ],
   "projectsSkills": [
     {
-      "id": 1,
-      "projectId": 1,
-      "skillId": 1
-    },
-    {
       "projectId": 4,
       "skillId": 2,
       "id": 5
+    },
+    {
+      "projectId": 3,
+      "skillId": 9,
+      "id": 11
+    },
+    {
+      "projectId": 3,
+      "skillId": 10,
+      "id": 12
     }
   ]
 }
