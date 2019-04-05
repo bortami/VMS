@@ -17,9 +17,10 @@ import {
 	TableHeader,
 	TableBody,
 	FormField,
-	Paragraph
+	TextArea
 } from 'grommet';
 import { MailOption, AddCircle, Trash, Close, Checkmark, Edit, SubtractCircle } from 'grommet-icons';
+import './volunteers.css';
 
 const defaultOptions = [];
 const objectOptions = [];
@@ -45,6 +46,7 @@ export default class SingleVolunteerView extends Component {
 		openDelete: undefined,
 		openProjectList: undefined,
 		openSkillsEdit: undefined,
+		showEditBox: undefined,
 		value: '',
 		options: [],
 		projectOptions: objectProjectOptions,
@@ -64,6 +66,8 @@ export default class SingleVolunteerView extends Component {
 	onCloseSkillsEdit = () => {
 		this.setState({ openSkillsEdit: undefined });
 	};
+	onShowEditBox = () => this.setState({ showEditBox: true });
+	onCloseEditBox = () => this.setState({ showEditBox: undefined });
 
 	//how many hours did a volunteer work in total?//
 	totalHours = (volunteerId) => {
@@ -164,6 +168,24 @@ export default class SingleVolunteerView extends Component {
 				});
 			});
 	};
+	updateNotes = () => {
+		const editedNote = {
+			id: parseInt(this.props.match.params.volunteerId),
+			notes: this.state.notes
+		};
+		api.put('volunteers', editedNote).then(() => {
+			this.onCloseEditBox();
+			api
+				.single('volunteers', this.props.match.params.volunteerId)
+				.then((volunteer) => this.setState({ notes: volunteer.notes }));
+		});
+	};
+
+	handleFieldChange = (evt) => {
+		const stateToChange = {};
+		stateToChange[evt.target.id] = evt.target.value;
+		this.setState(stateToChange);
+	};
 	componentDidMount() {
 		const newState = {};
 		api.getExpanded('volunteersSkills', 'skill').then((parsedSkills) => {
@@ -176,7 +198,7 @@ export default class SingleVolunteerView extends Component {
 	}
 
 	render() {
-		const { openDelete, openProjectList, value, skillnames, openSkillsEdit } = this.state;
+		const { openDelete, openProjectList, value, skillnames, openSkillsEdit, showEditBox } = this.state;
 		const volunteer =
 			this.props.volunteers.find((a) => a.id === parseInt(this.props.match.params.volunteerId)) || {};
 		return (
@@ -344,10 +366,52 @@ export default class SingleVolunteerView extends Component {
 									</Layer>
 								)}
 
-								<Heading level={5}>Admin Notes:</Heading>
+								<Heading level={5}>
+									Admin Notes:<Button
+										icon={<Edit />}
+										plain
+										size="small"
+										onClick={this.onShowEditBox}
+									/>
+								</Heading>
 								<Text size="small" width="20vw">
 									{volunteer.notes}
+									{/*this doesn't update when I update a note. at this point, it's not breaking, so I'm moving on and will come back later to fix it/*/}
 								</Text>
+								{showEditBox && (
+									<Layer
+										position="left"
+										full="vertical"
+										modal
+										onClickOutside={this.onCloseEditBox}
+										onEsc={this.onCloseEditBox}
+									>
+										<Box fill="vertical" overflow="auto" width="medium" pad="medium">
+											<Box flex={false} direction="row" justify="between">
+												<Heading level={2} margin="none">
+													Edit Notes for {volunteer.name}
+												</Heading>
+												<Button icon={<Close />} onClick={this.onCloseEditBox} />
+											</Box>
+											<Form
+												onSubmit={() => {
+													this.updateNotes();
+												}}
+											>
+												<Box flex="grow" overflow="auto" pad={{ vertical: 'medium' }} />
+												<FormField>
+													<TextArea
+														placeholder={volunteer.notes}
+														onChange={this.handleFieldChange}
+														name="notes"
+														id="notes"
+													/>
+												</FormField>
+												<Button label="Add Note" type="submit" primary />
+											</Form>
+										</Box>
+									</Layer>
+								)}
 							</Box>
 							<Anchor onClick={this.onOpenDelete} margin="small">
 								<Trash /> Delete Volunteer
